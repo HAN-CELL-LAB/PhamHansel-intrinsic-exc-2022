@@ -5,6 +5,13 @@
 .vscode/*
 .MATLABDriveTag
 
+*/data/*
+!*/data/.gitkeep
+
+0*/figures/*
+!0*/figures/.gitkeep
+
+
 ### MATLAB ###
 # Windows default autosave extension
 # Created by https://www.toptal.com/developers/gitignore/api/matlab

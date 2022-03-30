@@ -1,0 +1,6 @@
+output/*
+
+figures/*
+!figures/.gitkeep
+
+*.pdf
