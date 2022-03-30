@@ -1,0 +1,17 @@
+[submodule "path/to/submodule"]
+	shallow = true
+[submodule "matlab-ext/penguin-matlab-utils"]
+	path = matlab-ext/penguin-matlab-utils
+	url = https://github.com/tuanpham96/penguin-matlab-utils
+[submodule "matlab-ext/export_fig"]
+	path = matlab-ext/export_fig
+	url = https://github.com/altmany/export_fig
+[submodule "matlab-ext/ParforProgMon"]
+	path = matlab-ext/ParforProgMon
+	url = https://github.com/DylanMuir/ParforProgMon
+[submodule "matlab-ext/shadedErrorBar"]
+	path = matlab-ext/shadedErrorBar
+	url = https://github.com/raacampbell/shadedErrorBar
+[submodule "matlab-ext/Violinplot-Matlab"]
+	path = matlab-ext/Violinplot-Matlab
+	url = https://github.com/bastibe/Violinplot-Matlab
