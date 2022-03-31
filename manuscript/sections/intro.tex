@@ -1,0 +1,110 @@
+\section{Introduction}
+
+Synaptic plasticity, and in particular long-term potentiation \citep[LTP;][]{Bliss1973-od,Nabavi2014-fn},
+    is widely considered as the primary cellular correlate of learning.
+    The synaptic theory of learning has been challenged, however,
+        based on the observation that properties of behavioral learning,
+        such as the duration of the learning phase or learned time intervals,
+        do not match properties of synaptic plasticity \citep[see][]{Gallistel2013-qm,Gallistel2014-el}.
+    Cell-autonomous forms of plasticity, intrinsic to activated cells,
+        emerge as alternative learning correlates \citep{Gershman2021-eu} that may
+            replace \citep{Johansson2015-ql,Gallistel2017-em,Johansson2019-sg}
+            or critically complement \citep[e.g.][]{Titley2017-da,Hansel2020-ep,Josselyn2020-et}
+        synaptic plasticity in its role in learning.
+    Cell-autonomous plasticity may rest on prolonged changes in membrane excitability and spike firing properties \citep{Marder1996-mp,Hansel2001-ti},
+        and this type of plasticity (``intrinsic plasticity''; IP) is considered here.
+    Note, however, that cell-autonomous plasticity is not restricted to changes in excitability,
+       and that excitability changes -- when they occur -- can also be homeostatic in nature \citep{Turrigiano1999-pn}.
+    IP has been observed
+        in response to activity patterns or in the context of behavioral learning both \textit{in vitro} and \textit{in vivo},
+        in types of neurons as diverse as cortical pyramidal neurons \citep[e.g.][]{Paz2009-yn,Mahon2012-bt,Moyer1996-bq}
+        and cerebellar Purkinje cells \citep[e.g][]{Schreurs1998-de,Belmeguenai2010-ee,Titley2020-df}.
+
+Computationally, the role of IP (including homeostatic IP) may be to
+        adjust the membrane threshold and excitability to an optimal target rate
+            \citep{Lazar2007-fl, Naude2013-bt, Zheng2014-op, Li2018-ev, Del_Papa2019-du,Loidolt2020-pw,Wu2020-ru},
+        or it may be to alter the excitability set-point to maximize information transfer between synaptic inputs and spike output
+            \citep{Stemmler1999-iz, Triesch2005-jo, Triesch2007-np, Joshi2009-yy, Savin2010-bf, Li2013-qk,Li2016-ge, Zhang2019-eo, Zhang2019-qh, Shaw2020-hu}.
+    IP models have been used to explain
+        homeostasis \citep{LeMasson1993-fr,Marder2002-lv,Wu2020-ru},
+        sequence learning \citep{Loidolt2020-pw},
+        networks with rich dynamics \citep{Naude2013-bt, Zheng2014-op},
+        criticality of neural networks \citep{Naude2013-bt,Del_Papa2019-du}
+        as well as receptive field development \citep{Triesch2005-jo, Triesch2007-np,Savin2010-bf}.
+    At the same time, their application has been explored in
+        reservoir computing for classification and regression tasks \citep{Steil2007-ql,Wang2020-us},
+        as well as more recently in machine learning algorithms \citep{Zhang2019-eo, Zhang2019-qh, Shaw2020-hu}
+        and neuromorphic computing implementation \citep{Dalgaty2019-ng, Baek2020-si}.
+    In contrast to these implications, the role of IP in the encoding of input patterns
+        -- e.g. in object recognition in sensory physiology,
+        but also in more abstract pattern encoding in general --
+        remains underexplored in computational biology.
+    This is despite the fact that threshold setting is a well-known problem (and solution)
+        in the engineering of software for face/object recognition.
+
+In neural networks, the issue at hand is generally the same,
+        but presents itself in a slightly more complex way as individual neurons
+        -- via their synaptic input --
+        may receive information about several unrelated objects / patterns.
+        Moreover, network connectivity is not determined by engineering goals,
+            but is set by biological rules during brain development and is therefore unknown.
+    A phenomenon that is shared, though, is that a threshold reduction at the output stage
+        (in biological neurons: IP being triggered at or near the soma) facilitates activation,
+        but may reduce the resolution of input representation, thus enhancing ``graininess''.
+    In a biological neuron, enhanced excitability via IP results in an amplification
+        that does not differentiate between synaptic inputs ``upstream'' of the location
+            that experienced the increase in excitability.
+    The consequences of this phenomenon for perception and signal encoding in neural networks
+        have not been studied so far.
+    Hence, we set out to investigate the consequences of IP
+        for the detection and differentiation of unknown input patterns
+            as well as the recognition of known / learned patterns.
+    There are different physiological aspects of IP,
+        including changes in the spike threshold,
+        in excitability as measured by the number of evoked spikes,
+        or the amplitude of the afterhyperpolarization (AHP) that may follow spike bursts.
+    Our study focuses on the spike threshold as the only IP parameter
+        that by definition separates ``non-spike'' from ``spike'' states,
+        which determine whether information encoded by a neuron is further conveyed through the network.
+
+Here the term ``pattern'' is used to describe general input patterns,
+        which may be any pattern of information that is conveyed via synapses onto neurons.
+    However, for illustrative purposes we will use examples from object recognition in sensory physiology.
+    Indeed, the inspiration for the recognition task comes from a simplified analogy to face recognition
+        -- of both individual faces and ``face'' as an object category --
+        posed by \cite{Titley2017-da} when discussing the problem of neuronal activation and integration into ensembles,
+        in situations where fine-scale object details are missing,
+            or only local structural inputs are presented.
+    With the neural code (portfolio of information that is represented)
+        of concept cells set up by synaptic connectivity patterns,
+            enhancing intrinsic excitability through IP would
+            amplify the ultimate responsiveness of the neuron to all its inputs without differentiation.
+    This could result in a more robust representation
+        (and possibly categorization) of the concept (e.g. a face) of interest,
+        when its inputs lack certain details.
+    Moreover, such effects of categorization by design can be obtained by
+        regulating intrinsic amplification alone,
+        without the need for changing synaptic weights,
+        which might come at the cost of changing synaptic weight ratios
+        and thus possibly the information content that is represented.
+
+Here we perform a parametric study on a two-layer feedforward network
+        consisting of inputs selective for certain binary output units.
+    Our main goal is to determine consequences of threshold change for network performance in two tasks:
+        a) a pattern distinction task, in which IP is expected to lower performance
+        and b) a recognition task for reporting already known / learned patterns.
+    In contrast to similar computations used in software engineering applications,
+        our study introduces ambiguities inherent to biological or biologically inspired artificial neural networks
+            that arise from unknown connectivity parameters:
+                selectivity of the output units (neurons) for input features,
+                and selectivity in the presentation of such features by the input units.
+    The main result of our study is that a decrease in output threshold may facilitate pattern recognition,
+        in particular when inputs are incomplete and network selectivity is imperfect.
+    This finding demonstrates that IP -- in form of a negative threshold shift --
+        is beneficial under conditions when neurons have to interpret incomplete input patterns and assign them to a specific pattern or object category.
+    In addition, we re-analyze published data sets obtained
+        during whole-cell patch-clamp recordings from L2/3 pyramidal neurons in cortex
+        to determine physiological threshold ranges.
+    We identify electrical activation paired with cholinergic signaling
+        as an activity pattern that promotes a negative threshold change
+        and thus drives neurons into a signaling mode that favors the detection of known input patterns.

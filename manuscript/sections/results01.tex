@@ -1,0 +1,44 @@
+\subsection{Single unit supra-threshold activation with incomplete patterns}
+
+\input{figures/Fig2}
+
+A central hypothesis of this study is that -- in contrast to pattern discrimination -- the recognition of known,
+        but incomplete patterns may benefit from enhanced intrinsic excitability.
+    To provide a proof-of-principle demonstration
+        that a reduction in spike threshold enables neuronal activation with a lower number of synaptic inputs,
+        we start with the simple example of
+        a binary unit $Y$ activated by a Heaviside step function (\autoref{eq:heavisidefun}).
+    Its intrinsic excitability is characterized by the threshold of activation  $\theta$.
+    We assume that its activity represents the active state of all of its inputs in $X$ (\autoref{fig:demo-simple}).
+    The connectivity $W$ from the input units in X to the output of interest Y could be generated in various ways.
+    For simplicity, we choose to either draw them from
+        a uniform distribution (\autoref{eq:defunifnorm} and \autoref{fig:demo-simple}a)
+        or assign equal values (\autoref{fig:demo-simple}b).
+    For the former, on average, the weights would decrease linearly with their order (\autoref{fig:demo-simple}c).
+    Either way, the weights are normalized to a sum of 1, for simplified control of the output threshold range.
+
+When ignoring false positives (for now), an incomplete pattern in $X$ would be any pattern where
+        at least one unit is inactive
+        and the resulting active state of the output signifies the recognition of an input pattern despite such incompleteness.
+    As shown in \autoref{fig:demo-simple}a,b (sub-panels \textit{iv, v}),
+        when there are not enough input units active
+        or without the presence of high-weight inputs,
+        low thresholds are required to evoke responses in the output unit.
+    Although more inputs or the presence of stronger inputs would allow for more flexibility in the range of required thresholds (sub-panels \textit{v}),
+        in the absence of low thresholds the trade-off is that the number of patterns allowing for the recognition becomes limited,
+        and that weaker inputs are likely insufficient.
+    This might be problematic in cases where weak inputs convey information about relevant object details.
+    A solution is lowering the threshold (sub-panels \textit{ii, v}, \autoref{fig:demo-simple}d) of the output.
+    In neural network terms, increased excitability
+        -- for example resulting from activity-dependent plasticity of membrane excitability --
+        would allow for more patterns, even incomplete ones,
+        to be sufficient to evoke supra-threshold responses regardless of the arrangement of input weights,
+        e.g. few synaptic inputs with high input weights or more with low input weights.
+
+This simple toy example hints at the possible computational benefit of intrinsic excitability
+        when recognition is desired, but input components are missing.
+    However, this example assumes that all inputs represent the object of interest,
+        which is not the case when unnecessary inputs,
+        or inputs belonging to another object (category) are present.
+    Next, we are going to include irrelevant inputs to examine the possible problems and benefits
+        for the recognition of the relevant input pattern.

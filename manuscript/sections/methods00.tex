@@ -1,0 +1,126 @@
+\subsection{Discrimination of input patterns in a two-layer feedforward network}
+
+The model used consists of a two-layer feedforward network
+        with $N_X$ (usually 10) number of input $X$ units
+        and $N_Y$ number of binary output $Y$ units.
+    They are connected via the weight matrix $W$,
+        first initialized from a uniform distribution $\unfdistrib{0}{1}$,
+        then normalized to a sum of 1 for each $Y$ (L1 normalization).
+    In other words, the entries in $W$ are constructed as
+        $W_{Y_j,X} = \unfnormgen{N_X} \ \forall \ j \in [1, N_Y]$
+        (\autoref{eq:defunifnorm}).
+
+\vspace{-1em}
+\begin{align}
+    \unfnormgen{N} = \left\{
+            \dfrac{w_i}{\sum_i w_i}
+            \right\}
+        \text{ where } w_i \sim \unfdistrib{0}{1}
+        \text{ for }
+        i \in [1, N]
+    \label{eq:defunifnorm}
+\end{align}
+
+The output activity $Y_j$ is binary,
+        characterized by a Heaviside activation function,
+        with a threshold $\theta_j$ (\autoref{eq:heavisidefun}).
+    Decreased thresholds are synonymous with increased neural intrinsic excitability.
+    Initially, these thresholds are sampled from $\unfdistrib{0}{1}$.
+
+\vspace{-1em}
+\begin{align}
+    Y_j = H(W_{Y_j X} X | \theta_j) =
+    1 \text{  if  } \sum_i W_{ji} X_i > \theta_j
+    \text{ or } 0 \text{  otherwise}
+    \label{eq:heavisidefun}
+\end{align}
+
+When presenting all possible binary input patterns,
+        we quantify the entropy of the output patterns (\autoref{eq:entropyfun}) as a function of $W, \theta$,
+        along with the number of unique output patterns
+        to present a measure of discriminability at the output layer
+        (\autoref{supp:demo-discrim}, see initial state).
+    We also optimize such measure at baseline (i.e. $\Delta \theta = 0$)
+        and then observe the effects of output threshold changes on performance in the discrimination task.
+
+
+\vspace{-1em}
+\begin{align}
+    S(Y) = - \sum_j
+        P\left(\sigma_Y^{(j)}\right)
+        \log_2 P\left(\sigma_Y^{(j)}\right)
+    \text{ where } P\left(\sigma_Y^{(j)}\right)
+    \text{ is the probability of the output state }
+    \sigma_Y^{(j)} \in \{0,1\}^{N_Y}
+    \label{eq:entropyfun}
+\end{align}
+
+
+We choose a simple approach to optimize the Euclidean distance with a randomly selected output pattern set.
+For each network instantiation,
+    a random mapping between $2^{N_X}$ input patterns ($\sigma_X^{(j)} \in \{0,1\}^{N_X}$)
+        and output patterns ($\sigma_{Y^\prime}^{(j)} \in \{0,1\}^{N_Y}$)
+    is chosen to optimize for the Euclidean distance loss (\autoref{eq:euclideanloss}).
+We track the entropy of the output patterns along the process
+    and pick the maximum entropy state as our ``best'' solution (\autoref{supp:demo-discrim}a).
+    This approach was selected over other loss function choices, because of its inherent simplicity.
+    The resulting number of unique patterns and output entropy are shown in \autoref{supp:discrim-ent-nunq}.
+
+\vspace{-1em}
+\begin{align}
+    L(Y, Y^{\prime}) = \left \langle \lVert Y - Y^{\prime} \rVert_2 \right \rangle
+    \text{ where } Y^{\prime} \text{ is the ``desired'' output state}
+    \text{ and } \lVert \bullet \rVert_2 \text{ is the L2 norm}
+    \label{eq:euclideanloss}
+\end{align}
+
+In addition, for a specific minimally shared input pattern $k$
+        (for simplicity, assumed for only the first $k$ input units that are always activated),
+        we quantify the resulting mean pairwise output distances
+        (either Jaccard distances $J_d$ in \autoref{eq:jaccarddist}
+        or normalized Hamming distances $H_d$ in \autoref{eq:hammingdist})
+        as another measure of discriminability.
+    This is shown in \autoref{fig:discrim} for the best states,
+        and in \autoref{supp:discrim-dist-full} for both the initial and best states,
+        with $N_X=10$ for different $N_Y$.
+
+\vspace{-1em}
+\begin{align}
+    J_d(Y^{(1)}, Y^{(2)}) &= 1 -
+        \frac{
+            \# \left\{
+                i \Big| Y^{(1)}_i = Y^{(2)}_i = 1
+                \right\}
+        }{
+            \# \left\{
+                j \Big| Y^{(1)}_j = 1 \text{ or } Y^{(2)}_j = 1
+                \right\}
+        }
+        \text{ where }
+        \begin{dcases}
+            Y^{(1)}, Y^{(2)} \text{ are output vectors}
+            \\
+            \# \left\{\bullet\right\}
+            \text{ is the cardinality of a given set}
+        \end{dcases}
+    \label{eq:jaccarddist}
+    \\
+    H_d(Y^{(1)}, Y^{(2)}) &= 1 -
+        \frac{
+            \# \left\{
+                i \Big| Y^{(1)}_i = Y^{(2)}_i
+                \right\}
+        }{
+            N_Y
+        }
+    \label{eq:hammingdist}
+\end{align}
+
+
+Both quantify the number of differences between binary patterns,
+        but $J_d$ is normalized by the total number of activated locations between both patterns,
+        while $H_d$ is normalized by the length of the patterns.
+    Note that this results in $J_d$ being more biased towards activated units,
+        and not being defined when there are no activated units in both patterns
+        (hence the red lines are cut off at the right hand-side of the panels in \autoref{fig:discrim}).
+    These simulations were run on the Neuroscience Gateway \citep{Sivagnanam2013-au}.

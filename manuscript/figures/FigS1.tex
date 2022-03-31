@@ -1,0 +1,25 @@
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth,center]{figures/FigS1.png}
+    \caption{
+    \textit{Discrimination task: changes in entropy and reduction of Euclidean loss}.
+    (\textbf{a-b})
+        Example of the progress in optimization tracking the Euclidean loss (black)
+        and selecting for the \textbf{\textit{best}} entropy value in the output layer patterns (\textit{a}$_1$),
+        with the initial and best weight matrices shown in
+            (\textit{a}$_2$, heatmaps show the weights between inputs and outputs)
+        and output thresholds in (\textit{a}$_3$).
+        The effects of $\Delta \theta$ on the entropy
+            and number of unique output patterns are shown in (\textit{b}$_1,2$).
+    (\textbf{c}) For a fixed 10 $X's$ with different $N_Y$ (colors),
+        the network properties (weights, thresholds) are shown against each other
+            and against the maximum entropy/number of unique patterns
+            due to $\Delta \theta$.
+        $\Delta \theta_{\mathrm{max}}$ is the threshold change
+            where the values (entropy or \# unique) are maximum.
+        Note that the \textit{init}-$W$ is constant at 0.1
+            because of the L1 normalization.
+    }
+    \label{supp:demo-discrim}
+\end{figure}
+

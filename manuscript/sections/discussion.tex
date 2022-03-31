@@ -1,0 +1,240 @@
+\section{Discussion}
+
+The first main finding from our study is
+        that intrinsic plasticity benefits and enables neural coding strategies
+            that aim at the recognition of known, but incompletely presented input patterns.
+    This interpretative coding comes at the expense of coding precision;
+        this effect is a direct consequence of the loss of resolution
+            that results from the fact that intrinsic amplification applies
+            to all synaptic inputs located ``upstream'' of where the excitability is changed.
+    As such, this phenomenon is not restricted to near-somatic changes in spike threshold,
+        but will equally apply to excitability changes specific to dendritic compartments
+        \citep{Losonczy2008-pi,Ohtsuki2012-ds}.
+
+The second main finding is that a shift in coding mode
+        is promoted by electrical activity paired with cholinergic signaling,
+        but not by electric or cholinergic activation alone.
+    This observation is of interest, because of what the coding modes imply.
+    High-accuracy representation and encoding of input patterns is advantageous
+        when unknown patterns need to be distinguished.
+    It is not known what the pattern should look like,
+        so an incomplete pattern cannot be distinguished from the complete, unknown pattern.
+    Interpretative encoding, in contrast,
+        matches a pattern against a known pattern,
+        and reports whether
+            the presented pattern belongs to an expected category
+            or matches a specific object of interest.
+    The finding that this shift in encoding strategy results
+        from paired cholinergic and electric activation is of interest,
+        as this activation configuration can be expected to create -- via learning --
+        known patterns out of previously unknown ones
+        upon repeated presentation and with a certain level of attention.
+    Our identification of cholinergic co-activation as a critical contributor to IP
+        does not exclude other, additional mechanisms.
+    For example, it has been shown that IP in cortical pyramidal neurons
+        is triggered by the activation of metabotropic glutamate receptors (mGluRs) that
+            regulate small-conductance, calcium-dependent SK-type K channels \citep{Sourdet2003-qr}.
+    Thus, the cellular machinery is present to allow for excitability alterations by a variety of mechanisms.
+    \textit{In vivo} recordings from cortical pyramidal neurons confirm, however, that
+        the ultimate control of bidirectional IP and threshold plasticity is executed by ion channels
+            that can indeed affect excitability parameters,
+            namely primarily Na$^+$ and/or K$^+$ conductances \citep{Mahon2012-bt}.
+
+In an initial step, we demonstrate that increased excitability
+        -- in form of a reduction in threshold potential --
+        harms output discrimination.
+    This is because intrinsic excitability amplifies responsiveness of $>$ 1 synaptic input,
+        which results in enhanced ``merging'' of output patterns,
+        and  a reduction in the resolution of object / pattern representation.
+    In contrast, performance in a recognition task does improve with reduced spike thresholds,
+        in particular under conditions that are challenging for perception,
+        such as a low degree of input selectivity in the output cells $Y$ and/or the presentation of incomplete patterns.
+    The latter observation is a positive consequence of the unspecific nature of amplification:
+        a reduction in the spike threshold will allow a higher number of input combinations (synapses) to evoke spike firing.
+    To stay in our example of neurons specialized in face recognition,
+        successful detection of a face (as an object category)
+        or successful detection of a specific, individual face
+        becomes possible even when details of the object are missing or only details are presented.
+    Such flexibility in input detection is one of the requirements for the detection of known objects,
+        which points to an essential nature of intrinsic plasticity mechanisms in neuronal encoding strategies.
+    In expansion of such role, it has been observed that neurons fire
+        at similar rates for pairs of objects,
+            for whom an associative relationship has been learned,
+        while they fire at different rates for pairs of objects
+            that have no learned association \citep{Freedman2011-bo}.
+    This finding suggests that membrane excitability
+        -- in addition to shared synaptic drive --
+        can become a signature of encoded objects that the network groups into object categories.
+    Synaptic connectivity remains an important factor, and therefore it is noteworthy
+        that a similar amplification would result from an increase of weights across all excitatory synapses.
+    The reason why biological networks do not seem to use this synaptic strategy is possibly
+        that such upregulation would depend on the activity of all synapses.
+    It would be nearly impossible to do so without changing synaptic weight ratios,
+        with unforeseeable consequences for object representation.
+
+The improvement in performance of the recognition task upon lowering of the spike threshold is limited
+        by the fact that false-positives emerge next to true-positives.
+    The FPR rate will increase alongside the TPR rate when intrinsic amplification rises,
+        and thus the probability of incorrect object identification (false recognition) increases as well.
+    The difference between these detection rates, TPR $-$ FPR, depends on
+        the selectivity index $\alpha_W$ (TPR $-$ FPR increases with high selectivity values),
+        the degree of input overlap (it increases with low overlap)
+        and pattern completeness (it increases with a high degree of completeness).
+    The dependence on these parameters allows us to determine optimal spike thresholds
+        for different parameter constellations,
+        with maximal relative changes of $-$ 0.4 to $-$ 0.5 being required under non-preferential detection conditions.
+    While the occurrence of false-positives cancels out
+            some of the advantages of intrinsic plasticity in the recognition of objects,
+        it is possible that biological networks may compensate for this effect by
+            identifying false-positives via network effects.
+    In this scenario, individual neurons may signal positive recognition at short-delays
+        (and this coding would be reflected in the TPR rate),
+        while computations within the larger network would enable correction for false-positives;
+        in such case, the TPR rate would actually better reflect performance than the TPR $-$ FPR difference.
+
+\subsubsection*{Reference to biological excitability data}
+
+We have analyzed data sets obtained from
+        whole-cell patch-clamp recordings from L2/3 pyramidal cells in V1 cortex of awake macaques \citep{Li2020-ej}
+        and in S1 cortex of mice \textit{in vitro} \citep{Gill2020-wy}.
+    These data sets make it possible to assess
+        the range of assumed thresholds under awake conditions (macaques)
+        and the plasticity range under \textit{in vitro} conditions (mice).
+    The recordings from cortical slices that are used here include
+        activation protocols that trigger intrinsic plasticity.
+    Our analysis shows that in V1 cortex the threshold is up to $20$ mV more positive than the resting potential.
+    In S1 cortex, the distance is somewhat higher, up to $30$ mV.
+    This difference in $\Delta V_{TR}$ might well be partially related to the species and experimental conditions.
+    However, unlike the primary somatosensory cortex \citep{Brecht2003-vf},
+        visual cortices are known to operate in a ``high-input regime'' that is signified by
+            strong synaptic input
+            and high-frequency spike activity at rest \citep{Shadlen1998-je}.
+    It therefore is possible that these different types of neurons
+        adjust their spike thresholds differently
+        to optimize their firing properties for different neural coding goals.
+
+We find that all three activation patterns
+        -- electric, cholinergic and paired --
+        all tend to increase excitability as measured by the number of evoked spikes.
+    In contrast, the threshold potential is bidirectionally changed over a total range of about $10$ mV.
+    Negative threshold changes are almost exclusively initiated
+        by paired electric and cholinergic activation (\autoref{fig:ffwd-biol-data}d,e).
+    As the spike threshold is the only excitability parameter
+        that is informative about spiking vs non-spiking conditions,
+        the threshold is critical in determining a neuron's ability to participate in any neuronal ensemble.
+
+
+\subsubsection*{Realistic constraints for abstract model variables}
+
+The hyperparameters used
+        (selectivity strength, overlap and input incompleteness)
+        are somewhat abstract
+        and do not in themselves carry information about relevant parameter ranges.
+    Therefore, we offer below some additional notes
+        and predictions on values that these hyperparameters may realistically assume.
+
+First, imperfect \textit{selectivity strength} ($\alpha_W < 1$)
+        is typically expected in realistic settings
+        as individual neurons are known to respond to considerable input variance.
+    While the realistic range of $\alpha_W$ values is difficult to determine,
+        we can make some simple predictions regarding the relationship between
+            selectivity strength and intrinsic excitability.
+    Increased object familiarity,
+        via repeated presentation of a certain input,
+        would allow $\alpha_W$ to increase.
+    In fact, repeated synaptic activity
+        -- which conveys the information that an input pattern is repeatedly or persistently present --
+        may lead to co-occurring synaptic and intrinsic potentiation \citep[e.g.][]{Belmeguenai2010-ee}.
+    This is meaningful as $\alpha_W$ is likely to stay $ < 1$
+        (a value of 1 would be equivalent to the presence of only one input,
+        albeit potentially represented by multiple synapses).
+    Our model shows that $\alpha_W$ -- over a wide range of assumed values $ < 1$ --
+        makes it necessary to reduce threshold to maximize task performance.
+    Thus, the co-occurrence of synaptic potentiation with enhanced excitability has the capacity
+        to move both parameters into an optimal parameter space.
+
+Second, nonzero \textit{selectivity overlap} in lower layers of encoding
+        is expected in biological systems,
+        especially for distributed coding of complex objects.
+    Such objects often are composed of building blocks
+        that are on their own similar between otherwise different objects,
+        as much as a Lego figure is different from any other,
+        but the individual Lego pieces are the same.
+    A biological example is a face that is entirely unique,
+        even though specific components -- such as eye color --
+            only exist in a limited number of variations.
+    This phenomenon causes overlap
+            as eyes are a common input component to encode for faces;
+        even with consideration of eye colors,
+            the same eye color might be shared between otherwise different faces.
+    The presence of overlap is not always a limiting factor.
+    For instance, it could allow for
+        (a) reinforced recognition, especially in weak input conditions,
+        or (b) contribution of encoding object co-occurrence for higher-order concepts.
+    However, at the same time, high selectivity overlap
+        often poses a challenge for differentiation
+            (in discrimination and recognition tasks),
+        which generally is made easier the more object components differ.
+
+Third, while selectivity overlap is a potential intrinsic network concern
+        and is sometimes difficult to quantify,
+        \textit{input incompleteness} (or sparsity) is intuitively relevant
+            as a concern in real-world settings.
+    How much this parameter matters for recognition, we argue,
+        depends on the ``need'' (goal) for such recognition task,
+        which might further constrain the optimal excitability states.
+    For example, engrams responsible for predator detection might benefit from
+        higher excitability with some leeway on false positives
+        (for a field mouse,
+            recognition of a predator by only a few simple features,
+                such as recognition of a bird of prey by its silhouette,
+            enhances the probability of survival).
+    In face recognition cells in primates,
+        which may recognize an individual in a position-independent manner,
+        input completeness is expected to always be $< 1$,
+        because the object can only be presented in one position at a time,
+        leaving the other possible object constellations unrepresented.
+    Such parameter constraints determine critical ranges
+        for optimal threshold values that our model describes.
+
+\subsubsection*{Hints from artificial settings in machine learning}
+
+Machine learning algorithms show astounding analogies to IP.
+    For example, batch-normalization (BN) is a form of input normalization
+        that is applied during the training of deep learning models.
+    Though the exact mechanism is still debated, BN is known to speed up training
+            and to smooth the optimization landscape \citep{Ioffe2015-bw,Santurkar2018-ff};
+        in addition, it serves as a form of regularization during training \citep{Luo2018-vw}.
+    A recent study \citep{Shaw2020-hu} points out
+        (a) the similarity between neural IP and machine learning BN
+            as both perform certain transformations of the inputs
+            with adaptive parameters based on the history of the input statistics,
+        and (b) that their implementation speeds up training
+            in image classification tasks
+            trained on multi-layer-perceptron and convolutional networks.
+    Interestingly, another study \citep{Frankle2020-qs} shows that
+        deep artificial neural networks trained solely using BN parameters
+        could reach nontrivial classification performance.
+    Combining both of these recent works, one could hypothesize that
+        if synaptic weights of a neural network are frozen
+            or the weight learning rate is much slower than the intrinsic update
+            (which is biologically plausible, for example
+                \cite{Lopez-Rojas2016-ew} shows dendritic IP is more easily inducible than SP),
+        appropriate changes to the parameters characterizing the artificial nonlinearity
+            could achieve significant improvement with fewer adaptive parameters.
+    In other words, given a ``status-quo'' network topology,
+        training only the intrinsic parameters to adapt artificial single unit nonlinearity
+        might achieve better performance in an energy efficient manner,
+            which is advantageous when it is expensive to change the synaptic profiles of the network \citep{Gallistel2017-em}.
+    In both biological and machine learning scenarios, it appears that
+        IP enables a shift from faithful / accurate to interpretative decoding,
+            which may be an essential coding strategy in fast-changing environments
+                where some object features remain hidden,
+        but objects nevertheless need to be swiftly recognized, or at least categorized.
+
+The work presented here highlights the role that
+        threshold plasticity in particular plays in this adaptation of coding strategy.
+    It further shows that cholinergic co-activation,
+        a cellular modulation mechanism associated with attention
+        and thus detection of signal salience,
+    promotes the adaptation step.

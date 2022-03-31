@@ -1,0 +1,192 @@
+\subsection{Recognition of known / learned input patterns in a binary two-layer feedforward network}
+
+\subsubsection*{Overview description}
+
+We use a simple feedforward network with two layers:
+        150 input units in the $X$ layer
+        and 3 binary output units in the $Y$ layer (\autoref{fig:demo-ffwd-recog}a).
+    Each output unit is considered to represent a input pattern.
+    The weight matrix $W_{YX}$ is non-negative, characterized by
+        a selectivity index $\alpha_W$
+        and selectivity overlap (\autoref{fig:demo-ffwd-recog}b).
+
+The inputs are generated at $X$, characterized by
+        a \% completeness to allow for incomplete input patterns,
+        with additive normal-distributed noise (\autoref{fig:demo-ffwd-recog}c).
+    The outputs at $Y$ are binary,
+        activated by a Heaviside step function with
+            their own thresholds set to a base threshold $\theta_{\mathrm{base}}$
+            and an additional change $\Delta \theta$ applied to only one output threshold
+            (\autoref{fig:demo-ffwd-recog}a).
+    The task of interest is \textit{recognition} of a known / learned pattern of interest by the tested output unit.
+    The term ``incomplete pattern'' in the context of the recognition task refers to a deviation from the known / learned pattern,
+        in which components of the complete pattern are missing.
+
+
+\subsubsection*{Selectivity and connectivity}
+
+The 150 inputs in $X$ are selective for either none, only one or all of the outputs in $Y$.
+    The number of inputs selective to each output unit is kept fixed at
+        $N_{\text{selec}}=N_X/N_Y=150/3 = 50$.
+
+The non-negative weights in matrix $W_{YX}$ are characterized by the \textit{selectivity index}
+    $\alpha_W \in [0,1]$ (\autoref{eq:ffwdweight-alphaW})
+    -- a higher value means that more weights are concentrated on the corresponding selective output (\autoref{fig:demo-ffwd-recog}b, left to right).
+    Thus, $\alpha_W$ describes selectivity in responsiveness of the outputs in $Y$.
+
+\vspace{1em}
+\begin{equation}
+    \label{eq:ffwdweight-alphaW}
+    \begin{aligned}
+        W_{Y_j X} &= \left\{
+                W_{\mathrm{selec}},
+                W_{\mathrm{nonselec}}
+                \right\} \\
+            \text{ where } &
+            \begin{cases}
+                W_{\mathrm{selec}} &=
+                    \alpha_W
+                    \cdot
+                    \unfnormgen{N_{\text{selec}}} \\
+                W_{\mathrm{nonselec}} &=
+                    (1 - \alpha_W)
+                    \cdot
+                    \unfnormgen{N_X - N_{\text{selec}}}
+            \end{cases}
+    \end{aligned}
+\end{equation}
+
+
+Additionally, the weight matrix is also characterized by \textit{selectivity overlap}
+    (overlap in the inputs in $X$).
+    For example, \autoref{fig:demo-ffwd-recog}b top panels are examples of zero selectivity overlap,
+        while the bottom panels have 20 input units that overlap and are represented by all 3 outputs.
+    For each parameter set, we run 10 instantiations of $W_{YX}$.
+
+The identity of which output(s) each input is selective for is defined beforehand,
+    and is also influenced by the selectivity overlap parameter
+    but the number of selective inputs per output remains fixed ($N_{\text{selec}}=50$).
+
+\subsubsection*{Input generation}
+
+The inputs at $X$ are generated with binary states (before noise is added)
+        to represent only one pattern in each example.
+    To represent input incompleteness, the parameter \textit{\% complete}
+        (\autoref{fig:demo-ffwd-recog}c)
+        controls the percentage of the inputs that are active.
+    On top of this, there is an additive noise
+        drawn from a zero-mean normal distribution
+        with a fixed width of $\sigma_{\text{noise}} = 0.8$.
+
+\subsubsection*{Output activation}
+
+The output units at $Y$ are activated by a Heaviside step function (\autoref{eq:heavisidefun}),
+    each with their own threshold value.
+    For simplicity, we set all output thresholds
+        to a base threshold $\theta_{\text{base}} = 0.5$,
+        and apply a change only to one output unit with an amplitude of $\Delta \theta \in [-0.5,0.5]$.
+
+\subsubsection*{Task of interest}
+
+For each manipulation of $\Delta \theta$ in a selected output unit,
+        we generate 2000 random input patterns
+        and characterize the outputs at $Y$ to evaluate performance of \textit{recognition} (of known / learned patterns),
+        via the true-positive rate (TPR) of \textit{only} the output whose threshold is changed with $\Delta \theta$.
+    Activity in other output units is disregarded
+        (in other words, all the other outputs would be considered noise/irrelevant).
+    Additionally, TPR and other performance rates (TNR, FPR, FNR) are calculated
+        for varying values of $\alpha_W$ and overlap
+        and shown in \autoref{supp:ffwd-recog-more}
+        and \autoref{supp:ffwd-recog-tradeoff-roc}.
+    Receiver operating characteristics (ROC) analysis for recognition is plotted
+            in \autoref{supp:ffwd-recog-tradeoff-roc}
+        and the corresponding areas-under-the-curve (AUC) are shown
+            in \autoref{supp:ffwd-recog-ROCAUC}.
+
+\subsubsection*{Optimal activation threshold change}
+
+For each parameter set and performance curve $f(\Delta \theta)$ of a given task,
+    $\Delta \theta_{\text{optim}}$ is defined as the change of threshold $\Delta \theta$
+        whose absolute value is the smallest,
+        while resulting in the highest performance outcome.
+    In other words, we define the \textit{``optimal'' threshold change}
+        as the change nearest to 0 to achieve the maximum performance.
+    These are shown in \autoref{fig:ffwd-recog-perf}b,c.
+
+\subsection{Measurement of biological resting and threshold potentials}
+
+\subsubsection*{V1 \textit{in vivo} biological thresholds}
+
+We obtained the \textit{in vivo} resting and threshold potentials
+        of layer 2/3 neurons in V1 from recordings performed in awake macaques \citep{Li2020-ej}
+        (see summary of data in \autoref{fig:ffwd-biol-data}a).
+    We denote membrane thresholds as $V_T$,
+        resting potentials as $V_R$
+        and the distance between them as $V_{TR} = V_T - V_R$.
+    The biological data statistics are reported as (mean $\pm$ SEM).
+
+\subsubsection*{S1 \textit{in vitro} biological thresholds}
+
+We calculate resting and threshold potentials from \textit{in vitro} recordings
+        from mouse S1 L2/3 pyramidal neurons that we published previously \citep{Gill2020-wy}.
+    This data set includes three groups of intrinsic plasticity experiments:
+        (i) \textit{electric group} -- electric tetanization using somatic depolarization or synaptic tetanization,
+        (ii) \textit{cholinergic group} -- bath application of the agonist of muscarinic acetylcholine receptors (mAChRs) oxotremorine-m (oxo-m),
+        and (iii) \textit{cholinergic paired group} -- co-application of oxo-m when electric stimulation is applied.
+    The somatic depolarization protocol in (i) consisted of
+        10 depolarizing current pulses (50 ms duration) that
+        were delivered at 10 Hz, followed by 2 seconds of holding current.
+    The depolarization amplitude was adjusted to evoke one to three spikes during each of these pulses
+        and was repeated 100 times for a total duration of 5 minutes.
+    The synaptic tetanization protocol in (i) mimicked the overall timing presented in the somatic protocol,
+        but now somatic current injection was replaced by
+            extracellular stimulation using 10 Hz pulses (applied for 1 second)
+            followed by 2 seconds of no stimulation.
+    This pattern was repeated 100 times.
+    In the co-activation protocol (iii), only somatic depolarization was used.
+    For further experimental details, see \cite{Gill2020-wy}.
+
+To calculate the resting potentials $V_R$, we use
+        the holding current ($I_{\mathrm{hold}}$)
+        and the recorded potential 20 ms before test pulse ($V_{\mathrm{spont}}$),
+        along with the input resistance ($R_{\mathrm{in}}$):
+            $V_R = V_{\mathrm{spont}} - I_{\mathrm{hold}} R_{\mathrm{in}}$
+            (assuming zero net active components at rest at steady state).
+    The threshold potential $V_T$ is detected
+        as the potential first crossing 8 $V/s$
+        \citep[for a similar approach, see][]{Mahon2012-bt, Popescu2021-cj}
+        around 1 ms before the \textit{first} action potential.
+    We also look at the difference between resting and threshold potentials
+        $\Delta V_{TR} = V_T - V_R$ to assess intrinsic excitability.
+    The distributions of these data are shown in \autoref{fig:ffwd-biol-data}b.
+
+For \textit{baseline} (pre-induction; denote with superscript $x^{\mathrm{0}}$ for a property $x$),
+        we take the average measures (either resting or threshold potentials)
+        of the last 4 sweeps before application of any plasticity protocol.
+    For \textit{post} measurements (denote as $x^{\mathrm{f}}$),
+        we take at least 10 sweeps near the end of the experiment of each cell for average.
+    Change between pre- and post-induction properties is denoted as
+        $x^{\mathrm{\Delta}} = x^{\mathrm{f}} - x^{\mathrm{0}}$
+        (\autoref{fig:ffwd-biol-data}d).
+    Additionally in this figure panel, linear fits, along with their p-values and $R^2$
+        are shown for functional excitability changes
+        (number of spikes $n_{spk}^{\Delta}$)
+        related to changes in membrane potential measures ($V_R, V_T, \Delta V_{TR}$).
+
+In addition, we determined the theoretically conceivable lower and upper threshold bounds
+        which, for illustrative purposes, are shown together
+        with our modeling results in \autoref{fig:ffwd-biol-data}c.
+    We define the biological lower bound
+        as the average of all resting potentials in \cite{Gill2020-wy}.
+    To define the biological threshold upper bound,
+        we obtained recordings from 4 additional S1 cells
+        \citep[same recording conditions as in][]{Gill2020-wy}.
+    In these recordings, we evoked multiple action potentials
+        by injecting depolarizing current pulses.
+    We took the threshold potentials measured
+        during the relative refractory state
+        as the upper bound of threshold potentials.
+    This relative refractory state is characterized
+        by a reduction in AP amplitude after the first spike was fired
+        as well as a spike threshold at a more depolarized membrane potential
+        (see \autoref{supp:demo-refrac-thres} for example).

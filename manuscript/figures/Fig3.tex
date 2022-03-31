@@ -1,0 +1,23 @@
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth,center]{figures/Fig3.png}
+    \caption{
+    \textit{Description of the abstract model with binary output units and the task of concern}.
+    (\textbf{a}) Summary of model and task, and parameters involved.
+    The model is a feedforward network comprised of an input layer ($X$ - 150 units in total)
+        and output layer ($Y$ - 3 units in total).
+    The colors represent the selectivity for a specific output unit in each input unit.
+    (\textbf{b}) The excitatory connectivity matrix $W_{YX}$ is characterized by the selectivity index $\alpha_W$ and the number of overlap.
+    Each sub-panel is an example with different pairs of ($\alpha_W$, \# overlap).
+        Higher $\alpha_W$ (from left to right) concentrates more input weights on the corresponding output that inputs are selective for.
+        Higher number of overlap (top to bottom) creates more inputs selective for all output units, and simultaneously more inputs without any selectivity.
+    (\textbf{c})
+        The output activation function is a Heaviside-step function characterized by
+            the constant base threshold ($\theta_{\mathrm{base}}$ for all output units,
+            and a certain threshold change $\Delta\theta$ for only one output unit
+            (in this example the first output $Y_1$, colored red).
+        The input patterns are parameterized by the ``\% complete'' for each pattern -- higher \% complete (top to bottom) recruits more inputs.
+        There is Gaussian noise added on top of the input patterns, with a fixed $\sigma_\mathrm{noise}$ (not shown here for simplicity).
+    }
+    \label{fig:demo-ffwd-recog}
+\end{figure}

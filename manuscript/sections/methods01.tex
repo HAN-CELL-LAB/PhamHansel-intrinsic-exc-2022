@@ -1,0 +1,18 @@
+\subsection{Model to test the effect of threshold changes on the number of inputs needed for suprathreshold activation}
+
+To demonstrate that incomplete pattern recognition could benefit from increased excitability,
+        we use a simple binary unit $Y$ receiving inputs from 10 binary $X$ units.
+    For simplicity, we represent the connectivity in the network with an excitatory matrix $W$ (\autoref{fig:demo-simple}a,b top).
+    The weights are constructed either from
+        a uniform distribution $\unfdistrib{0}{1}$ (\autoref{fig:demo-simple}a)
+        or set equal (\autoref{fig:demo-simple}b),
+        then normalized to a sum of 1.
+    The normalization allows us to control the range of the output threshold.
+    In other words, $W = \unfnormgen{N_X = 10}$ (\autoref{eq:defunifnorm}).
+
+The output activity $Y$ is binary, characterized by a Heaviside activation function,
+        with a threshold $\theta \in [0, 1]$ (\autoref{eq:heavisidefun}).
+    We assume that $Y$ represents an input pattern (such as a complex object or concept)
+        that the downstream network associates with activation of all of these input units.
+    Hence, \textit{incomplete patterns} would be any binary representation of $X$
+        where at least one unit is $0$ (\autoref{fig:demo-simple}a-\textit{iv}, b-\textit{iv}).

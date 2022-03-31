@@ -1,0 +1,49 @@
+\subsection{Threshold decrease results in a reduced ability to discriminate distinct input patterns}
+
+It is expected that increased neuronal excitability via a decrease in spike threshold
+        results in a ``merging'' of output patterns due to a shared signal amplification
+            that takes place ``downstream'' (closer to the soma) of multiple otherwise independent synaptic inputs that target the dendrite.
+    This downstream amplification may lead to reduced resolution
+        and thus a decrease in the ability to discriminate input patterns.
+    To quantitatively describe this effect, we model a two-layer feedforward network (\autoref{fig:discrim})
+        and inspect the output discriminability via output pattern distributions
+        and pairwise distance for both random (initial) and optimized states (via Euclidean loss, see Methods).
+
+Across a wide range of values of $N_X, N_Y$, we observe that
+        the effects of threshold change in the output layer $\Delta \theta$
+        on the number of unique output patterns and on output entropy
+        in the random initial states
+        are generally symmetric (\autoref{supp:discrim-ent-nunq}).
+    The optimization process via minimization of the Euclidean loss for output patterns
+        results in a small decrease in the output thresholds (see \autoref{supp:demo-discrim}c$_2$),
+        creating the asymmetry in the peak values of the output entropy and pattern number
+            (as a function of $\Delta \theta$ to shift to the right),
+        especially for small $N_Y$
+        (\autoref{supp:demo-discrim}b,
+        \autoref{supp:discrim-ent-nunq}a$_2$,b$_2$).
+    The $\Delta \theta$ for the peak values in these curves tends towards positive change,
+        exemplifying how decreased thresholds may harm discriminability.
+
+\input{figures/Fig1}
+
+Another way to quantify discriminability is to look at the pairwise distances between the binary output patterns
+        using known distance measures such as
+            the Jaccard distances $J_d$
+            or the normalized Hamming distances $H_d$
+            (\autoref{fig:discrim}b-d).
+    Instead of observing these distances for all input patterns, we choose
+        a minimal common input activation number $k$,
+        to parameterize input overlap when quantifying output discriminability.
+    The relationship between these distances and threshold changes is shown in \autoref{fig:discrim}c,d for the optimized states,
+        as well as \autoref{supp:discrim-dist-full} for both the random initial and best states.
+
+Decreases in thresholds, for both cases, increase output activity as expected
+        but decrease the binary distances $J_d$ and $H_d$,
+        for different values of input pattern with minimal similarity $k$.
+    As $k$ increases, the resulting output patterns become less distinguishable and $\Delta \theta < 0$ worsens the outcome.
+    On the other hand, when $\Delta \theta > 0$, the effects still hold mainly for Jaccard distances,
+        as they are more biased towards activated units.
+    The dependence of the normalized Hamming distances on $\Delta \theta$ is nonmonotonic
+        (illustrated in \autoref{fig:discrim}b)
+        as sparsification of output activity by a large threshold increase would eventually decrease pattern differences.
+    Together, these considerations exemplify how detrimental it is for discrimination performance when output thresholds decrease.

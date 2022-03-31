@@ -1,0 +1,22 @@
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth,center]{figures/Fig1.pdf}
+    \caption{
+    \textit{Output threshold decrease reduces discriminability}.
+    (\textbf{a}) Schematic of the model and quantification of discriminability.
+        For each $k$, a set of binary inputs $\{X^{(i)}\}$ with the first set of $k$ active units
+            (minimal overlapping activation) are considered more ``discriminable''
+        if the pairwise distance (either with Jaccard distances $J_d$ or normalized Hamming distances $H_d$)
+            of the corresponding outputs $\{Y^{(i)}\}$ is larger.
+        $W$ is the weight matrix between $X$ and $Y$, $\theta$ is the output layer threshold
+            while $\Delta \theta$ is the applied threshold change.
+    (\textbf{b}) Illustration of the way $J_d$ (red) and $H_d$ (blue) change for specific pairs of outputs
+        when $\Delta \theta$ changes the excitability of the outputs (green dots).
+    (\textbf{c}, \textbf{d}) The mean $J_d$ (red) and $H_d$ (blue) distances and mean output activity (black) are plotted
+        as a function of $\Delta \theta$ for different $k$ (shadings)
+        of $N_X = 10$ input units and different number of output units $N_Y$.
+    These are shown for the best states, see \autoref{supp:discrim-dist-full} for comparison with the initial states.
+    }
+    \label{fig:discrim}
+\end{figure}

@@ -2,5 +2,8 @@ output/*
 
 figures/*
 !figures/.gitkeep
+!figures/*.tex
+
+*/tmp/*
 
 *.pdf

@@ -1,0 +1,128 @@
+\ProvidesPackage{resources/penguins-template}
+
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{mathtools,commath}
+\usepackage{titlesec,geometry}
+\usepackage{caption}
+\usepackage{fvextra}
+\usepackage{float}
+\usepackage[export]{adjustbox}[2011/08/13]
+% \usepackage{indentfirst}
+% \usepackage{euscript}
+\usepackage{enumitem}
+\usepackage{lineno}
+\usepackage{setspace}
+\usepackage{natbib}
+\usepackage{mathptmx}
+
+% Spacing and geometry of page
+\geometry{
+  margin    = 1in,
+  tmargin   = 1in,
+  bmargin   = 1in,
+  footskip  = 0.50in
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+\setlength{\columnsep}{15pt} % for twocolumn
+
+\titlespacing\section{0pt}{0.5em}{0pt}
+\titlespacing\subsection{0pt}{0pt}{0pt}
+\titlespacing\subsubsection{0pt}{0pt}{0pt}
+
+
+% Title and section formats
+\titleformat{\section}{\fontfamily{ppl}\selectfont\large\bfseries}{}{0em}{}
+\titleformat{\subsection}{\fontfamily{ppl}\selectfont\bfseries}{\arabic{subsection}.}{0.2em}{}
+\titleformat{\subsubsection}[runin]{\fontfamily{ppl}\selectfont\normalsize\bfseries}{\noindent\arabic{subsection}.\arabic{subsubsection}.}{0.2em}{}[: \ ]
+
+
+% Color definitions
+\definecolor{verylightred}{rgb}{0.95,0.9,0.93}
+\definecolor{verylightgray}{rgb}{0.9,0.9,0.9}
+\definecolor{abstractbackground}{rgb}{0.94,0.94,0.94}
+\definecolor{darkerblue}{rgb}{0,0,0.9}
+\definecolor{darkerred}{rgb}{0.6,0.04,0.04}
+\definecolor{darkergreen}{rgb}{0.1,0.4,0.05}
+
+
+% Hyperlink setups
+\hypersetup{
+  colorlinks    = true,
+  linkcolor     = black,
+  urlcolor      = black,
+  anchorcolor   = black,
+  citecolor     = darkerblue,
+  filecolor     = black,
+  pdfborder     = {0 0 0},
+}
+
+
+% Figure captions
+\captionsetup{
+    margin          = {20pt,0pt},
+    aboveskip       = 5pt,
+    belowskip       = -10pt,
+    font            = small,
+    labelfont       = bf,
+    justification   = justified,
+    labelsep        = period,
+}
+
+
+% Table settings
+\setlength{\tabcolsep}{0.5em} % for the horizontal padding
+\renewcommand{\arraystretch}{1.25} % for the vertical padding
+
+
+% Enumitems spacing settings
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt,leftmargin=1em}
+\setenumerate{nosep,topsep=0pt,parsep=0pt,partopsep=0pt,leftmargin=1em}
+
+% Align equation spacing settings
+% https://tex.stackexchange.com/questions/47400/remove-vertical-space-around-align
+\usepackage{etoolbox}
+\newcommand{\zerodisplayskips}{%
+  \setlength{\abovedisplayskip}{0pt}%
+  \setlength{\belowdisplayskip}{0pt}%
+  \setlength{\abovedisplayshortskip}{-20pt}%
+  \setlength{\belowdisplayshortskip}{0pt}}
+\appto{\normalsize}{\zerodisplayskips}
+\appto{\small}{\zerodisplayskips}
+\appto{\footnotesize}{\zerodisplayskips}
+
+
+% Autoref styding and name
+\AtBeginDocument{%
+  \LetLtxMacro\hyperrefautoref\autoref
+  \LetLtxMacro\autoref\firstboldautoref
+}
+\makeatletter
+\DeclareRobustCommand\firstboldautoref{\@firstboldautoref}
+\def\@firstboldautoref#1#{%
+  \def\fb@autoref@star{#1}%
+  \fb@autoref
+}
+\def\fb@autoref#1{%
+    \global\expandafter\let\csname boldautoref@#1\endcsname\@empty
+    \textbf{\expandafter\hyperrefautoref\fb@autoref@star{#1}}%
+}
+\makeatother
+
+\renewcommand{\figureautorefname}{Fig.}
+\renewcommand{\equationautorefname}{Eq.}
+\renewcommand{\tableautorefname}{Tab.}
+
+
+% Citation settings
+\setcitestyle{aysep={}}
+
+
+% Additional document formatting
+\linenumbers
+
+\sfcode`.=1200
