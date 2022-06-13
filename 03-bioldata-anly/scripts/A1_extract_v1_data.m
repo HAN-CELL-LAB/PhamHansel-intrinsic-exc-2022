@@ -1,7 +1,7 @@
 clc; clear; close all;
 run start_up;
 
-full_file_name = 'data/V1invivo_Li2020.csv';
+full_file_name = 'data/v1-data/v1-invivo_Li2020.csv';
 tbl = readtable(full_file_name, 'CommentStyle', '/*');
 tbl.dV_mV = tbl.Vthres_mV - tbl.Vrest_mV;
 data = table2struct(tbl);
@@ -42,5 +42,9 @@ summary_stats = table(...
 [file_path, file_name, ~] = fileparts(full_file_name);
 save(fullfile(file_path, [file_name '.mat']), 'data', 'summary_stats');
 
+stat_tbl = array2table(table2array(summary_stats)', ...
+    'VariableNames', summary_stats.Row,...
+    'RowNames', summary_stats.Properties.VariableNames, ...
+    'DimensionNames', {'Stat', 'Variables'});
 
-array2table(table2array(summary_stats)', 'VariableNames', summary_stats.Row, 'RowNames', summary_stats.Properties.VariableNames)
+writetable(stat_tbl, fullfile(file_path, 'v1-stats.csv'), 'WriteRowNames', true);

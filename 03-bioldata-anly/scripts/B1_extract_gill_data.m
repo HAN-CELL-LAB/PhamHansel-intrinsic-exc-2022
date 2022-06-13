@@ -1,6 +1,6 @@
 clc; clear; close all;
 run start_up.m
-run extract_gill_data_config.m
+run B1_extract_gill_data_config.m
 
 %% Define data paths
 main_data_path = 'data/gill-data/Layer II.III S1 BC IP';

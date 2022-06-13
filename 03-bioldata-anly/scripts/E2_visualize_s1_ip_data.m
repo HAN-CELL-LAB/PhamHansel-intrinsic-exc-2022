@@ -2,15 +2,14 @@ clc; clear; close all;
 run start_up.m
 
 %% Define paths
-main_data_path = 'data/gill-data/Layer II.III S1 BC IP';
+main_data_path = 'data/ip-data';
 
-fig_path = 'figures/gill-data/Layer II.III S1 BC IP/sum'; 
+fig_path = 'figures/ip-data/sum'; 
 if ~exist(fig_path, 'dir')
     mkdir(fig_path); 
 end
 
-INFO_path = fullfile(main_data_path, 'info');
-PROCESS_path = fullfile(main_data_path, 'processed');
+PROCESS_path = main_data_path; 
 
 %% Load data
 load(fullfile(PROCESS_path, 'analysis-summary.mat'));
@@ -22,20 +21,8 @@ cell_fullIDs = arrayfun(@(x) x.full_ID, analysis_table.info, 'uni', 0);
 exp_groups = arrayfun(@(x) x.Group, analysis_table.info, 'uni', 0);
 
 %% Expgroups colors and reassignment 
-
-expgroup_legends = table(...
-    {'WT Somatic','WT Synaptic','WT oxo-m','WT oxo-m Somatic'}', ...
-    {'electric','electric','cholingergic','cholingergic paired'}', ...
-    'VariableNames', {'name','legend'});
-
-unq_expgroups = {'cholingergic', 'electric', 'cholingergic paired'};
-
-for i = 1:size(expgroup_legends,1)
-    exp_groups(strcmp(expgroup_legends(i,:).name, exp_groups)) = expgroup_legends(i,:).legend;
-end
-
-expgroup_colors = return_colorbrewer('Set1', length(unq_expgroups))*0.95;
-expgroup_colors = flipud(expgroup_colors);
+unq_expgroups = {'cholinergic', 'electric', 'cholinergic paired'}; % customized order for colors instead of using `unique` 
+expgroup_colors = flipud(return_colorbrewer('Set1', length(unq_expgroups))*0.95);
 groupcolor_map = containers.Map(unq_expgroups, mat2colcell(expgroup_colors));
 
 %% Load selection 
@@ -92,7 +79,6 @@ values_pooled = struct2cell(pooled_analysis);
 pooled_table = table(select_cellids, pooled_expgroups, 'VariableNames', {'CellID', 'ExpGroup'});
 pooled_table = [pooled_table, struct2table(pooled_analysis)];
 
-
 %% Latex names
 latex_changed = struct(...
     'num_spikes', 'n_{spk}', ...
@@ -120,7 +106,7 @@ for i = 1:length(latex_pooled)
 end
 
 %% Save for later use
-save(fullfile(PROCESS_path, 'gill-select-data-analysis.mat'), ...
+save(fullfile(PROCESS_path, 'ip-select-data-analysis.mat'), ...
     'pooled_table', 'unq_expgroups', 'latex_pooled_struct');
 
 %% Violin summary 
@@ -133,7 +119,7 @@ pairs_to_plt = {'Vrest_1_base', 'Vrest_1_post'; ...
 ncols = size(pairs_to_plt,1);
 scale_xaxis = 0.4; 
 
-figure('units','normalized','position',[0,0,0.75,1]);
+figure('units','normalized','position',[0,0,0.65,1]);
 
 graphic_setdefault(35, ...
     'DefaultAxesMinorGridAlpha', 0.05, ...
@@ -145,6 +131,8 @@ graphic_setdefault(35, ...
     'DefaultAxesLineWidth', 2, ...
     'DefaultLineLineWidth', 3);
 
+ylim_1 = [-86, -29];
+ylim_2 = [0, diff(ylim_1)];
 
 for i = 1:ncols 
     subplot(1, ncols, i); hold on;
@@ -168,7 +156,7 @@ for i = 1:ncols
         yvj = yv(expgroup_inds,:);
         clrj = expgroup_colors(j,:);
         plot(xvj',yvj', 'color', [clrj,0.25], 'linewidth', 2);
-        scatter(xvj(:), yvj(:), 150, clrj, 'filled',...
+        scatter(xvj(:), yvj(:), 180, clrj, 'filled',...
             'markeredgecolor', 'none', ...
             'markerfacealpha',0.3, ...
             'displayname', expgroup_lgnd, ...
@@ -190,11 +178,12 @@ for i = 1:ncols
         pos = get(gca, 'position'); 
         set(gca, 'position', pos + [-0.02,0,0,0]);
     else 
+        ylim(ylim_2);
         pos = get(gca, 'position'); 
         set(gca, 'position', pos + [0.03,0,0.05,0]);
     end
     if i == 3
-        [lgnd, icons, ~,~] = legend(findobj(gca, 'tag', 'showlegend'), 'Fontsize', 28);
+        [lgnd, icons, ~,~] = legend(findobj(gca, 'tag', 'showlegend'), 'Fontsize', 30);
         set(lgnd, 'Box', 'on', 'Color', [1,1,1]*0.97, 'Location', 'southwest');
         lgnd.Position = lgnd.Position + [-0.2, 0.01, 0, 0];
         arrayfun(@(x) set(x.Children, 'MarkerSize', 15), findall(icons, 'type', 'hggroup'));      
@@ -207,7 +196,7 @@ linked_axes = findall(gcf, 'type', 'axes', 'tag', 'linked');
 linkaxes(linked_axes, 'y'); 
 despline('all'); 
 
-ylim(linked_axes(1), [-86, -29]);
+ylim(linked_axes(1), ylim_1);
 
 exportgraphics(gcf, fullfile(fig_path, 's1-violin.pdf'));
 close; 
@@ -227,7 +216,7 @@ nrows = 1;
 scale_expand_x = 0.2;
 xlim_config_fun = @(xr) 5*round(xr/5);
 
-graphic_setdefault(25, ...
+graphic_setdefault(28, ...
     'DefaultAxesMinorGridAlpha', 0.05, ...
     'DefaultAxesMinorGridLineStyle', '-', ...
     'DefaultTextInterpreter', 'latex', ...
@@ -238,7 +227,7 @@ graphic_setdefault(25, ...
     'DefaultLineLineWidth', 3);
 
 
-figure('units','normalized','position',[0,0,1,0.6]);
+figure('units','normalized','position',[0,0,0.95,0.65]);
 
 for i = 1:size(pairs_to_plt,1)
     subplot(nrows, ncols, i); hold on;
@@ -266,7 +255,9 @@ for i = 1:size(pairs_to_plt,1)
     yv_f = mdl.predict(xv_f); 
     pval_txt = [regexprep(sprintf('%.2e', pval),'e', '\\times10^{'), '}'];
     ttl_txt = {...
-        sprintf('$\\mathbf{%s \\sim %s + 1}$', stripdollarsymbols(axlbl_names{1}), stripdollarsymbols(axlbl_names{2})), ...
+        sprintf('$\\mathbf{%s \\sim %s + 1}$', ...
+            stripdollarsymbols(latex_pooled_struct.(field_2)), ...
+            stripdollarsymbols(latex_pooled_struct.(field_1))), ...
         sprintf('\\fontsize{%f}{0}\\selectfont $p = %s, R^2 = %.2f$', 8, pval_txt, R2)};
     
     plot(xv_f, yv_f, ...
@@ -305,7 +296,7 @@ for i = 1:size(pairs_to_plt,1)
     
     if i == length(pairs_to_plt)
         [lgnd, icons, ~,~] = legend(findobj(gca, 'tag', 'showlegend'),'fontsize', 22);
-        set(lgnd, 'Box', 'on', 'Color', [1,1,1]*0.97, 'Location', 'southwest');
+        set(lgnd, 'Box', 'on', 'Color', [1,1,1]*0.97, 'Location', 'southeast');
         arrayfun(@(x) set(x.Children, 'MarkerSize', 15), findall(icons, 'type', 'hggroup'));        
     end
 
@@ -315,91 +306,225 @@ linkaxes(findall(gcf, 'type', 'axes'), 'y');
 despline('all');
 ylim([-6,10]);
 
-annotation('textbox', 'units', 'normalized', 'position', [0.08,lgnd.Position(2),0.135,0.14], ...
+annotation('textbox', 'units', 'normalized', 'position', [0.08,lgnd.Position(2),0.14,0.14], ...
     'string', ...
     {'$x^{\mathbf{\Delta}} = x^{\mathrm{f}} - x^{\mathrm{0}}$', ...
-    '\quad (final $-$ initial)'}, ...
-    'Interpreter', 'latex', 'fontsize', 22, 'LineWidth', 2, 'BackgroundColor', [1,1,1]*0.97,  ...
+    ' (final $-$ initial)'}, ...
+    'Interpreter', 'latex', 'fontsize', 25, 'LineWidth', 2, 'BackgroundColor', [1,1,1]*0.97,  ...
     'VerticalAlignment', 'bottom', 'HorizontalAlignment', 'left')
 
 exportgraphics(gcf, fullfile(fig_path, 's1-change.pdf'));
 close;
 
-
 %% Sorted change based on dV_TR
 [sorted_dVchange, sorted_ind] = sort(pooled_table.dVthres_rest_change);
 sorted_rel_dVchange = pooled_table.dVthres_rest_percentchange(sorted_ind);
+
+sorted_nspkchange = pooled_table.num_spikes_change(sorted_ind); 
+sorted_rel_nspkchange = pooled_table.num_spikes_percentchange(sorted_ind); 
+
 sorted_expgroup = pooled_table.ExpGroup(sorted_ind);
 
 pseudo_xvec = 1:select_num_cells;
-text_ypos = -sign(sorted_dVchange) * 5;
-combined_text = arrayfun(@(x,y) sprintf('%.2f mV, \\color[rgb]{0.6,0.6,0.6}%.1f %%', x,y), ...
+
+text_dVTR_ypos = -sign(sorted_dVchange) * 6;
+combined_dVTR_text = arrayfun(@(x,y) sprintf('%.2f mV, \\color[rgb]{0.6,0.6,0.6}%.1f %%', x,y), ...
     sorted_dVchange, sorted_rel_dVchange, 'uni', 0);
 
+text_nspk_ypos = -sign(sorted_nspkchange) * 5;
+combined_nspk_text = arrayfun(@(x,y) sprintf('%.2f, \\color[rgb]{0.6,0.6,0.6}%.1f %%', x,y), ...
+    sorted_nspkchange, sorted_rel_nspkchange, 'uni', 0);
 
-figure('units','normalized','position',[0,0,0.9,0.65]); 
+stem_args = {'linewidth', 7, 'linestyle', '-', 'marker', 'none'};
+
+figure('units','normalized','position',[0,0,1,1]); 
+
+subplot(3,1,[1,2]);
 hold on; 
 
-stem(sorted_dVchange,'-k', 'linewidth', 4);
-ylim([-10, 15]);
+stem(sorted_dVchange,'k', stem_args{:});
+ylim([-12, 18]);
 ylabel(sprintf('%s (mV)', latex_pooled_struct.dVthres_rest_change));
 
-text(pseudo_xvec, text_ypos, combined_text, ...
+text(pseudo_xvec, text_dVTR_ypos, combined_dVTR_text, ...
     'Interpreter','tex', 'HorizontalAlignment', 'center',...
-    'FontSize', 18, 'Rotation', 90)
+    'FontSize', 15, 'Rotation', 90)
 
 for i = 1:length(unq_expgroups)
     exp_group_ith = unq_expgroups{i};
     loc2plt = strcmp(sorted_expgroup, exp_group_ith);
     
-    scatter(pseudo_xvec(loc2plt), 14 * ones(1,sum(loc2plt)), ...
+    scatter(pseudo_xvec(loc2plt), 17 * ones(1,sum(loc2plt)), ...
         250, expgroup_colors(i,:), ...
         'filled', 'MarkerEdgeColor', 'none', ...
         'displayname', exp_group_ith, 'tag', 'showlegend');
 end
 
+set(gca, 'ytick', -12:6:18);
 
 [lgnd, icons, ~, ~] = legend(findobj(gca, 'tag', 'showlegend'),'fontsize', 19);
 set(lgnd, 'Box', 'on', 'Color', [1,1,1]*0.97, 'Location', 'North');
-lgnd.Position = lgnd.Position + [0.25,-0.1,0,0]; 
+lgnd.Position = lgnd.Position + [0.2,-0.05,0,0]; 
 arrayfun(@(x) set(x.Children, 'MarkerSize', 15), findall(icons, 'type', 'hggroup'));
 
 yyaxis right;
-stem(pseudo_xvec + 0.2, sorted_rel_dVchange, '-', 'color', [0.6,0.6,0.6], 'linewidth', 4)
+stem(pseudo_xvec + 0.2, sorted_rel_dVchange, 'color', [0.6,0.6,0.6], stem_args{:});
 ylim([-100, 150]);
 ylabel(sprintf('%s \\%%', latex_pooled_struct.dVthres_rest_percentchange));
 set(gca, 'ycolor', [0.6,0.6,0.6]);
 
 xlim([0,select_num_cells+1]);
 hide_only_axis('x');
-xlabel(['S1 cells sorted by ' latex_pooled_struct.dVthres_rest_change]); 
+title(['S1 cells sorted by ' latex_pooled_struct.dVthres_rest_change]); 
 
+subplot(3,1,3);
+hold on; 
+
+stem(sorted_nspkchange,'k', stem_args{:});
+ylabel(sprintf('%s', latex_pooled_struct.num_spikes_change));
+text(pseudo_xvec, text_nspk_ypos, combined_nspk_text, ...
+    'Interpreter','tex', 'HorizontalAlignment', 'center',...
+    'FontSize', 15, 'Rotation', 90)
+
+text_ypos_cellids = 10 * ones(1,select_num_cells);
+stem(pseudo_xvec + 0.1, text_ypos_cellids, ':', 'color', [0.3,0.1,0.6,0.5]);
+sorted_cellids = pooled_table.CellID(sorted_ind); 
+text(pseudo_xvec, text_ypos_cellids, sorted_cellids, ...
+    'Interpreter','none', 'FontAngle', 'italic', ...
+    'HorizontalAlignment', 'left', 'VerticalAlignment', 'middle', ...
+    'FontSize', 8, 'Rotation', 60, ...
+    'BackgroundColor', [0.4,0.2,0.7], 'Color', 'w')
+
+ylim([-5, 10]);
+yyaxis right;
+stem(pseudo_xvec + 0.2, sorted_rel_nspkchange, 'color', [0.6,0.6,0.6], stem_args{:});
+
+set(gca, 'ycolor', [0.6,0.6,0.6]);
+ylabel(sprintf('%s \\%%', latex_pooled_struct.num_spikes_percentchange));
+ylim([-100, 200]);
+
+xlim([0,select_num_cells+1]);
+hide_only_axis('x');
+
+linkaxes(findall(gcf, 'type', 'axes'), 'x');
 exportgraphics(gcf, fullfile(fig_path, 's1-sorteddVchange.pdf'));
 close;
 
+%% Sorted change based on V_T
+[sorted_VTchange, sorted_ind] = sort(pooled_table.Vthres_first_change);
+sorted_dVchange = pooled_table.dVthres_rest_change(sorted_ind);
+
+sorted_nspkchange = pooled_table.num_spikes_change(sorted_ind); 
+sorted_rel_nspkchange = pooled_table.num_spikes_percentchange(sorted_ind); 
+
+sorted_expgroup = pooled_table.ExpGroup(sorted_ind);
+
+pseudo_xvec = 1:select_num_cells;
+
+text_V_ypos = -sign(sorted_VTchange) * 5;
+combined_V_text = arrayfun(@(x,y) sprintf('%.2f mV, \\color[rgb]{0.6,0.6,0.6}%.2f mV', x,y), ...
+    sorted_VTchange, sorted_dVchange, 'uni', 0);
+
+text_nspk_ypos = -sign(sorted_nspkchange) * 5;
+combined_nspk_text = arrayfun(@(x,y) sprintf('%.2f, \\color[rgb]{0.6,0.6,0.6}%.1f %%', x,y), ...
+    sorted_nspkchange, sorted_rel_nspkchange, 'uni', 0);
+
+stem_args = {'linewidth', 7, 'linestyle', '-', 'marker', 'none'};
+
+figure('units','normalized','position',[0,0,1,1]); 
+
+subplot(3,1,[1,2]);
+hold on; 
+
+stem(sorted_VTchange,'k', stem_args{:});
+ylim([-12, 12]);
+ylabel(sprintf('%s (mV)', latex_pooled_struct.Vthres_first_change));
+
+text(pseudo_xvec-0.1, text_V_ypos, combined_V_text, ...
+    'Interpreter','tex', 'HorizontalAlignment', 'center',...
+    'FontSize', 15, 'Rotation', 90)
+
+for i = 1:length(unq_expgroups)
+    exp_group_ith = unq_expgroups{i};
+    loc2plt = strcmp(sorted_expgroup, exp_group_ith);
+    
+    scatter(pseudo_xvec(loc2plt), 12 * ones(1,sum(loc2plt)), ...
+        250, expgroup_colors(i,:), ...
+        'filled', 'MarkerEdgeColor', 'none', ...
+        'displayname', exp_group_ith, 'tag', 'showlegend');
+end
+
+set(gca, 'ytick', -12:6:18);
+
+[lgnd, icons, ~, ~] = legend(findobj(gca, 'tag', 'showlegend'),'fontsize', 19);
+set(lgnd, 'Box', 'on', 'Color', [1,1,1]*0.97, 'Location', 'North');
+lgnd.Position = lgnd.Position + [0.2,-0.05,0,0]; 
+arrayfun(@(x) set(x.Children, 'MarkerSize', 15), findall(icons, 'type', 'hggroup'));
+
+yyaxis right;
+stem(pseudo_xvec + 0.2, sorted_dVchange, 'color', [0.6,0.6,0.6], stem_args{:});
+ylim([-15,15]);
+ylabel(sprintf('%s (mV)', latex_pooled_struct.dVthres_rest_change));
+set(gca, 'ycolor', [0.6,0.6,0.6]);
+
+xlim([0,select_num_cells+1]);
+hide_only_axis('x');
+title(['S1 cells sorted by ' latex_pooled_struct.Vthres_first_change]); 
+
+subplot(3,1,3);
+hold on; 
+
+stem(sorted_nspkchange,'k', stem_args{:});
+ylabel(sprintf('%s', latex_pooled_struct.num_spikes_change));
+text(pseudo_xvec, text_nspk_ypos, combined_nspk_text, ...
+    'Interpreter','tex', 'HorizontalAlignment', 'center',...
+    'FontSize', 15, 'Rotation', 90)
+
+text_ypos_cellids = 10 * ones(1,select_num_cells);
+stem(pseudo_xvec + 0.1, text_ypos_cellids, ':', 'color', [0.3,0.1,0.6,0.5]);
+sorted_cellids = pooled_table.CellID(sorted_ind); 
+text(pseudo_xvec, text_ypos_cellids, sorted_cellids, ...
+    'Interpreter','none', 'FontAngle', 'italic', ...
+    'HorizontalAlignment', 'left', 'VerticalAlignment', 'middle', ...
+    'FontSize', 8, 'Rotation', 60, ...
+    'BackgroundColor', [0.4,0.2,0.7], 'Color', 'w')
+
+ylim([-5, 10]);
+yyaxis right;
+stem(pseudo_xvec + 0.2, sorted_rel_nspkchange, 'color', [0.6,0.6,0.6], stem_args{:});
+
+set(gca, 'ycolor', [0.6,0.6,0.6]);
+ylabel(sprintf('%s \\%%', latex_pooled_struct.num_spikes_percentchange));
+ylim([-100, 200]);
+
+xlim([0,select_num_cells+1]);
+hide_only_axis('x');
+
+linkaxes(findall(gcf, 'type', 'axes'), 'x');
+exportgraphics(gcf, fullfile(fig_path, 's1-sortedVTchange.pdf'));
+close;
 
 %% Chi2 test of independence of dV_TR
 
-% cutoff_cmap = [0.05,0.05,0.05;0.4,0.4,0.4;0.8,0.8,0.8];
 cutoff_cmap = return_colorbrewer('Dark2', 3);
 conf_levels = [0.1,0.01,0.05]; 
 
 chi2plt_opts = {...
     struct(...
         'var_name', 'dVthres_rest_change', ...
-        'var_cutoff_vec', 0.005:0.005:2, ...
+        'var_cutoff_vec', linspace(0.01,2,200), ...
         'var_unit', 'mV'), ...
     struct(...
         'var_name', 'Vthres_first_change', ...
-        'var_cutoff_vec', 0.005:0.005:2, ...
+        'var_cutoff_vec', linspace(0.01,3,200), ...
         'var_unit', 'mV'), ...
     struct(...
         'var_name', 'dVthres_rest_percentchange', ...
-        'var_cutoff_vec', 0.05:0.05:6, ...
+        'var_cutoff_vec', linspace(0.05,6,200), ...
         'var_unit', '\%'), ...
     struct(...
         'var_name', 'Vrest_1_change', ...
-        'var_cutoff_vec', 0.005:0.005:2, ...
+        'var_cutoff_vec', linspace(0.01,2,200), ...
         'var_unit', 'mV')
 };
 
@@ -446,7 +571,7 @@ for i = 1:length(chi2plt_opts)
     end
     
     if i == 2
-        lgnd = legend(findobj(gca, 'tag', 'showlegend'));
+        lgnd = legend(findobj(gca, 'tag', 'showlegend'), 'fontsize', 12);
         title(lgnd, 'Sign groups');
         set(lgnd, 'Box', 'on');
     end
@@ -471,44 +596,39 @@ close;
 
 
 %% Demo for split group 
-
 signgroup_cmap = [0.05,0.05,0.05;0.4,0.4,0.4;0.8,0.8,0.8];
 txtgroup_cmap  = [0.0,0.0,0.0;0.98,0.98,0.98;0.95,0.95,0.95];
 
+% demo_chi2_opts = {...
+%     struct(...
+%         'var_name', 'dVthres_rest_change', ...
+%         'var_cutoff', dVTR_change_cutoff, ...
+%         'var_additional_null', @(T) T.num_spikes_change < 0 & T.dVthres_rest_change < 0, ...
+%         'cutoff_types', -1, ...
+%         'var_unit', 'mV');
+% };
+
 demo_chi2_opts = {...
-    struct(...
-        'var_name', 'dVthres_rest_change', ...
-        'var_cutoff', 0.6, ...
-        'cutoff_types', [-1,0], ...
-        'var_unit', 'mV'), ...
-    struct(...
-        'var_name', 'Vthres_first_change', ...
-        'var_cutoff', 1, ...
-        'cutoff_types', 0, ...
-        'var_unit', 'mV'), ...
-    struct(...
-        'var_name', 'Vthres_first_change', ...
-        'var_cutoff', 1.6, ...
-        'cutoff_types', [-1,0,1], ...
-        'var_unit', 'mV'), ...
     struct(...
         'var_name', 'dVthres_rest_percentchange', ...
-        'var_cutoff', 2.4, ...
-        'cutoff_types', [-1,0], ...
-        'var_unit', '\%'), ...
-    struct(...
-        'var_name', 'Vrest_1_change', ...
-        'var_cutoff', 1, ...
-        'cutoff_types', 0, ...
-        'var_unit', 'mV')
+        'var_cutoff', 1, ...               
+        'var_additional_null', @(T) T.num_spikes_change < 0 & T.dVthres_rest_change < 0, ...
+        'cutoff_types', -1, ...
+        'var_unit', '%');
 };
-demo_chi2_opts = {...
-    struct(...
-        'var_name', 'dVthres_rest_change', ...
-        'var_cutoff', 0.6, ...
-        'cutoff_types', [-1], ...
-        'var_unit', 'mV')
-}
+
+fig_file_name = 's1-chi2-pie.pdf'; 
+
+graphic_setdefault(20, ...
+    'DefaultAxesMinorGridAlpha', 0.05, ...
+    'DefaultAxesMinorGridLineStyle', '-', ...
+    'DefaultTextInterpreter', 'latex', ...
+    'DefaultLegendInterpreter', 'latex', ...
+    'DefaultAxesTitleFontSize', 1.4, ...
+    'DefaultAxesLabelFontSize', 1.1, ...
+    'DefaultAxesLineWidth', 2, ...
+    'DefaultLineLineWidth', 3);
+
 for demo_chi2_opt = demo_chi2_opts
     demo_chi2_opt = demo_chi2_opt{:}; %#ok<FXSET>
     var_name = demo_chi2_opt.var_name;
@@ -516,19 +636,20 @@ for demo_chi2_opt = demo_chi2_opts
     var_unit = demo_chi2_opt.var_unit; 
     var_latex = latex_pooled_struct.(var_name);
     
+    if isfield(demo_chi2_opt, 'var_additional_null')
+        additional_args = {demo_chi2_opt.var_additional_null}; 
+    end 
+    
     for cutoff_type = demo_chi2_opt.cutoff_types
         
-        fig_name = sprintf('off-s1-demo-chi2-[var=%s]-[cutoff=%.2f]-[type=%d].pdf', var_name, var_cutoff, cutoff_type);
+        fig_name = sprintf('%s-[var=%s]-[cutoff=%.2f]-[type=%d].pdf', fig_file_name, var_name, var_cutoff, cutoff_type);
         
-        [pval, chi2aux] = chi2test_groupeffect(pooled_table, var_name, var_cutoff, cutoff_type);
+        [pval, chi2aux] = chi2test_groupeffect(pooled_table, var_name, var_cutoff, cutoff_type, additional_args{:});
         
         sign_group_data = chi2aux.data;
         pie_data = sign_group_data.Variables;
         pie_titles = sign_group_data.Properties.RowNames;
         pie_groups = sign_group_data.Properties.VariableNames;      
-
-%         pie_group_lbls = cellfun(@(x) append_varname_signgroup(x, var_latex, var_cutoff, var_unit), pie_groups, 'uni', 0);
-%         figure('units', 'normalized', 'position', [0,0,0.7,0.5]);
         
         pie_group_lbls = cellfun(@(x) sprintf('%s threshold shift', x) , pie_groups, 'uni', 0);
         figure('units', 'normalized', 'position', [0,0,0.95,0.4]);
@@ -545,33 +666,38 @@ for demo_chi2_opt = demo_chi2_opts
             for j = 1:length(txt_objs)
                 ptxt = txt_objs(j); 
                 txt_color = txtgroup_cmap(j,:);   
-                set(ptxt, 'FontSize', 20, 'Color', txt_color, ...
+                set(ptxt, 'FontSize', 22, 'Color', txt_color, ...
                     'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle');
                 ptxt.Position = 0.65 * ptxt.Position;
             end
             
             set(findobj(ax,'type','patch'), 'LineWidth', 4, 'EdgeColor', 'w');
             ax.Colormap = signgroup_cmap;
-%             title(sprintf('%s \n (n=%d)', pie_titles{i}, n_sample_ith));
             ttl = title(ax,sprintf('%s (n=%d)', pie_titles{i}, n_sample_ith));
             set(ttl,'unit', 'normalized');
             ttl.Position(2) = ttl.Position(2) - 1.1;
         end
         
-        lgnd = legend(pie_group_lbls, 'Fontsize', 22);
+        lgnd = legend(pie_group_lbls, 'Fontsize', 24);
         lgnd.Layout.Tile = 'east';
         
         lgnd_ttl = sprintf('$\\chi^2$ test $p$-value = %.3g', pval);
+        % lgnd_ttl = {lgnd_ttl, sprintf('split by %s $\\sim %.2f$', var_latex, var_cutoff)};
         title(lgnd, lgnd_ttl, 'Interpreter', 'latex');
         
-        exportgraphics(gcf, fullfile(fig_path, fig_name));
-        close;
+%         exportgraphics(gcf, fullfile(fig_path, fig_name));
+%         close;
     end
 end
 
 %% Helper functions 
-function [pval,aux] = chi2test_groupeffect(tbl, var_name, var_cutoff, cutoff_type)
-
+function [pval,aux] = chi2test_groupeffect(tbl, var_name, var_cutoff, cutoff_type, var_additional_null)
+    
+    SG_add_null = zeros(height(tbl),1);
+    if exist('var_additional_null', 'var')
+        SG_add_null = var_additional_null(tbl);
+    end
+    
     [EG, EG_cat] = grp2idx(tbl.ExpGroup);
     X = tbl.(var_name);
     SG = sign(X);
@@ -580,15 +706,16 @@ function [pval,aux] = chi2test_groupeffect(tbl, var_name, var_cutoff, cutoff_typ
 
     switch cutoff_type
         case 0
-            SG(abs(X) <= var_cutoff) = 0;
+            SG(abs(X) <= var_cutoff | SG_add_null) = 0;
         case 1
-            SG(X <= var_cutoff) = -1;
+            SG(X <= var_cutoff | SG_add_null) = -1;
         case -1
-            SG(X >= -var_cutoff) = 1;
+            SG(X >= -var_cutoff | SG_add_null) = 1;
         otherwise
             error('Only -1,0,1 are accepted');
     end
     sign_group = cutofftype2signgroup(cutoff_type);
+    
     [SG, ~] = grp2idx(SG);
 
     P_X = histcounts2(EG, SG, 'BinMethod', 'integers');
