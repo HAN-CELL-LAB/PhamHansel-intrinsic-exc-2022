@@ -16,11 +16,26 @@ The inputs are generated at $X$, characterized by
     The outputs at $Y$ are binary,
         activated by a Heaviside step function with
             their own thresholds set to a base threshold $\theta_{\mathrm{base}}$
-            and an additional change $\Delta \theta$ applied to only one output threshold
+            and an additional change $\Delta \theta$ applied to
+            \NEWCHANGE{the threshold of only one output neuron}
             (\autoref{fig:demo-ffwd-recog}a).
+    \NEWCHANGE{Otherwise,
+        all neurons in the input layer $X$
+        and in the output layer $Y$, respectively,
+        are identical (non-parameterized)}.
     The task of interest is \textit{recognition} of a known / learned pattern of interest by the tested output unit.
     The term ``incomplete pattern'' in the context of the recognition task refers to a deviation from the known / learned pattern,
         in which components of the complete pattern are missing.
+
+\NEWCHANGE{Note that our model does not contain recurrent network components} \NEWCITE{\citep{Hopfield1982-ax}.}
+    \NEWCHANGEUNSURE{This selection was made as our goal is
+            to isolate emerging consequences of cell-autonomous intrinsic plasticity of neurons,
+            whose output function informs a measure of task performance.
+        It is anticipated that
+            with the recurrent, symmetric connectivity properties of a Hopfield model
+            the extracted features would be identical (i.e. benefits for task performance),
+            but additional complex functions might emerge.}
+        \footnote{Need to discuss}
 
 
 \subsubsection*{Selectivity and connectivity}
@@ -93,15 +108,21 @@ For each manipulation of $\Delta \theta$ in a selected output unit,
         and characterize the outputs at $Y$ to evaluate performance of \textit{recognition} (of known / learned patterns),
         via the true-positive rate (TPR) of \textit{only} the output whose threshold is changed with $\Delta \theta$.
     Activity in other output units is disregarded
-        (in other words, all the other outputs would be considered noise/irrelevant).
-    Additionally, TPR and other performance rates (TNR, FPR, FNR) are calculated
+        (in other words, all the other outputs would be considered noise
+        \NEWCHANGEUNSURE{ or irrelevant; note that if threshold changes in multiple neurons were considered, the error rate is expected to differ}
+        \footnote{if we care only about the "affected neuron" I don't think it matters, this matters only when we consider the whole network error rate; or if the neurons can affect each other, like in a recurrent network.}
+        ).
+    \TOREMOVE{Additionally, TPR and other performance rates (TNR, FPR, FNR) are calculated
         for varying values of $\alpha_W$ and overlap
-        and shown in \autoref{supp:ffwd-recog-more}
-        and \autoref{supp:ffwd-recog-tradeoff-roc}.
-    Receiver operating characteristics (ROC) analysis for recognition is plotted
-            in \autoref{supp:ffwd-recog-tradeoff-roc}
+        and shown in {\autoref{supp:ffwd-recog-more}}
+        and {\autoref{supp:ffwd-recog-tradeoff-roc}}.}
+    Receiver operating characteristics
+        (\NEWCHANGE{ROC; a method to show classification performance, graphically displayed as TPR vs FPR})
+        analysis for recognition is plotted in
+        \NEWCHANGE{ {\autoref{fig:ffwd-recog-perf}}b}
+            \TOREMOVE{{\autoref{supp:ffwd-recog-tradeoff-roc}}
         and the corresponding areas-under-the-curve (AUC) are shown
-            in \autoref{supp:ffwd-recog-ROCAUC}.
+            in {\autoref{supp:ffwd-recog-ROCAUC}}}.
 
 \subsubsection*{Optimal activation threshold change}
 
@@ -111,7 +132,8 @@ For each parameter set and performance curve $f(\Delta \theta)$ of a given task,
         while resulting in the highest performance outcome.
     In other words, we define the \textit{``optimal'' threshold change}
         as the change nearest to 0 to achieve the maximum performance.
-    These are shown in \autoref{fig:ffwd-recog-perf}b,c.
+    These are shown in \autoref{fig:ffwd-recog-perf}
+        \NEWCHANGE{c,d}.
 
 \subsection{Measurement of biological resting and threshold potentials}
 
@@ -133,6 +155,10 @@ We calculate resting and threshold potentials from \textit{in vitro} recordings
         (i) \textit{electric group} -- electric tetanization using somatic depolarization or synaptic tetanization,
         (ii) \textit{cholinergic group} -- bath application of the agonist of muscarinic acetylcholine receptors (mAChRs) oxotremorine-m (oxo-m),
         and (iii) \textit{cholinergic paired group} -- co-application of oxo-m when electric stimulation is applied.
+    \NEWCHANGE{Bath application of an mAChR agonist is intended
+        to activate mAChRs that are primarily located
+        on the extrasynaptic membrane of pyramidal cell dendrites and spines}
+        \NEWCITE{\citep{Yamasaki2010-di}.}
     The somatic depolarization protocol in (i) consisted of
         10 depolarizing current pulses (50 ms duration) that
         were delivered at 10 Hz, followed by 2 seconds of holding current.
@@ -145,6 +171,10 @@ We calculate resting and threshold potentials from \textit{in vitro} recordings
     This pattern was repeated 100 times.
     In the co-activation protocol (iii), only somatic depolarization was used.
     For further experimental details, see \cite{Gill2020-wy}.
+    \NEWCHANGE{Six new recordings were added
+        to increase the statistical power of the analysis presented here.
+        These recordings followed the same protocol as described in
+    } \NEWCITE{\cite{Gill2020-wy}}.
 
 To calculate the resting potentials $V_R$, we use
         the holding current ($I_{\mathrm{hold}}$)
@@ -189,4 +219,6 @@ In addition, we determined the theoretically conceivable lower and upper thresho
     This relative refractory state is characterized
         by a reduction in AP amplitude after the first spike was fired
         as well as a spike threshold at a more depolarized membrane potential
-        (see \autoref{supp:demo-refrac-thres} for example).
+        \TOREMOVE{(see {\autoref{supp:demo-refrac-thres}} for example)}.
+
+\NEWCHANGE{The statistics reported would be mean $\pm$ SEM.}

@@ -13,7 +13,14 @@ The first main finding from our study is
 
 The second main finding is that a shift in coding mode
         is promoted by electrical activity paired with cholinergic signaling,
-        but not by electric or cholinergic activation alone.
+        but not by electric or cholinergic activation alone
+    \NEWCITE{\citep[\NEWCHANGE{note that threshold changes can
+        generally also be triggered in the absence of cholinergic agonists;
+        e.g.}][]{Paz2009-yn,Alejandre-Garcia2022-mk}}.
+    \NEWCHANGE{In contrast, under our experimental conditions
+        -- which may provide a less efficient drive for plasticity --
+        cholinergic co-activation emerges as a factor that
+            facilitates this aspect of intrinsic plasticity}.
     This observation is of interest, because of what the coding modes imply.
     High-accuracy representation and encoding of input patterns is advantageous
         when unknown patterns need to be distinguished.
@@ -34,11 +41,23 @@ The second main finding is that a shift in coding mode
     For example, it has been shown that IP in cortical pyramidal neurons
         is triggered by the activation of metabotropic glutamate receptors (mGluRs) that
             regulate small-conductance, calcium-dependent SK-type K channels \citep{Sourdet2003-qr}.
-    Thus, the cellular machinery is present to allow for excitability alterations by a variety of mechanisms.
-    \textit{In vivo} recordings from cortical pyramidal neurons confirm, however, that
+    \NEWCHANGE{Together with our study on mAChR-mediated regulation of SK channels} \citep{Gill2020-wy},
+        \NEWCHANGE{this observation assigns a critical role in excitability control and plasticity
+                to Gaq-coupled metabotropic receptors that downregulate SK conductances.
+            Other neuromodulator receptors, e.g. serotonergic 5-HT receptors}
+            \NEWCITE{\citep[e.g.][]{Celada2013-wt}}
+                \NEWCHANGE{are present as well,
+                but a direct contribution to intrinsic plasticity in neocortical pyramidal cells has not been demonstrated yet}.
+    The cellular machinery is present to allow for excitability alterations by a variety of mechanisms.
+    \textit{In vivo} recordings from cortical pyramidal neurons confirm, that
         the ultimate control of bidirectional IP and threshold plasticity is executed by ion channels
             that can indeed affect excitability parameters,
             namely primarily Na$^+$ and/or K$^+$ conductances \citep{Mahon2012-bt}.
+    \NEWCHANGE{$I_h$ current generally is a candidate contributor
+        to intrinsic plasticity as well,
+        but is only expressed at low levels in L2/3 pyramidal cells}
+        \NEWCITE{\citep{Larkum2007-qw}}
+        \NEWCHANGE{and was therefore not investigated further}.
 
 In an initial step, we demonstrate that increased excitability
         -- in form of a reduction in threshold potential --
@@ -46,6 +65,12 @@ In an initial step, we demonstrate that increased excitability
     This is because intrinsic excitability amplifies responsiveness of $>$ 1 synaptic input,
         which results in enhanced ``merging'' of output patterns,
         and  a reduction in the resolution of object / pattern representation.
+    \NEWCHANGE{A related phenomenon is known from pattern separation
+        in granule cells of the hippocampal dentate gyrus:
+        in temporal lobe epilepsy,
+        granule cells may downregulate their excitability,
+        in effect restoring hampered pattern separation}
+        \NEWCITE{\citep{Yim2015-tc}}.
     In contrast, performance in a recognition task does improve with reduced spike thresholds,
         in particular under conditions that are challenging for perception,
         such as a low degree of input selectivity in the output cells $Y$ and/or the presentation of incomplete patterns.
@@ -238,3 +263,8 @@ The work presented here highlights the role that
         a cellular modulation mechanism associated with attention
         and thus detection of signal salience,
     promotes the adaptation step.
+    \NEWCHANGE{Thus, neuromodulation-inspired features of deep neural networks}
+        \NEWCITE{\citep{Mei2022-mq}}
+        \NEWCHANGE{may include consequences of IP, in particular threshold plasticity.
+    As we have shown here, this phenomenon promotes the recognition of incomplete objects and assignment to object categories}.
+

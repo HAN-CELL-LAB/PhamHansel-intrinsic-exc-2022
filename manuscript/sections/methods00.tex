@@ -39,7 +39,7 @@ When presenting all possible binary input patterns,
         we quantify the entropy of the output patterns (\autoref{eq:entropyfun}) as a function of $W, \theta$,
         along with the number of unique output patterns
         to present a measure of discriminability at the output layer
-        (\autoref{supp:demo-discrim}, see initial state).
+        \TOREMOVE{({\autoref{supp:demo-discrim}}, see initial state)}.
     We also optimize such measure at baseline (i.e. $\Delta \theta = 0$)
         and then observe the effects of output threshold changes on performance in the discrimination task.
 
@@ -62,9 +62,11 @@ For each network instantiation,
         and output patterns ($\sigma_{Y^\prime}^{(j)} \in \{0,1\}^{N_Y}$)
     is chosen to optimize for the Euclidean distance loss (\autoref{eq:euclideanloss}).
 We track the entropy of the output patterns along the process
-    and pick the maximum entropy state as our ``best'' solution (\autoref{supp:demo-discrim}a).
+    and pick the maximum entropy state as our ``best'' solution
+    \TOREMOVE{({\autoref{supp:demo-discrim}}a)}.
     This approach was selected over other loss function choices, because of its inherent simplicity.
-    The resulting number of unique patterns and output entropy are shown in \autoref{supp:discrim-ent-nunq}.
+    \TOREMOVE{The resulting number of unique patterns and output entropy are shown in
+    {\autoref{supp:discrim-ent-nunq}}}.
 
 \vspace{-1em}
 \begin{align}
@@ -81,7 +83,7 @@ In addition, for a specific minimally shared input pattern $k$
         or normalized Hamming distances $H_d$ in \autoref{eq:hammingdist})
         as another measure of discriminability.
     This is shown in \autoref{fig:discrim} for the best states,
-        and in \autoref{supp:discrim-dist-full} for both the initial and best states,
+        \TOREMOVE{and in {\autoref{supp:discrim-dist-full}} for both the initial and best states,}
         with $N_X=10$ for different $N_Y$.
 
 \vspace{-1em}

@@ -47,7 +47,13 @@ In neural networks, the issue at hand is generally the same,
         -- via their synaptic input --
         may receive information about several unrelated objects / patterns.
         Moreover, network connectivity is not determined by engineering goals,
-            but is set by biological rules during brain development and is therefore unknown.
+            but is set by biological rules during brain development.
+\NEWCHANGE{While principles of cortical connectome development and architecture are known}
+    \NEWCITE{\citep[e.g][]{Innocenti1981-gi, Felleman1991-az, Innocenti1995-ge,Singer1995-wi, Izhikevich2008-po},}
+    \NEWCHANGE{it is difficult to determine the settings of specific network parameters, such as
+        synaptic weights,
+        input/output selectivity,
+        or neuronal excitability}.
     A phenomenon that is shared, though, is that a threshold reduction at the output stage
         (in biological neurons: IP being triggered at or near the soma) facilitates activation,
         but may reduce the resolution of input representation, thus enhancing ``graininess''.
@@ -106,5 +112,6 @@ Here we perform a parametric study on a two-layer feedforward network
         during whole-cell patch-clamp recordings from L2/3 pyramidal neurons in cortex
         to determine physiological threshold ranges.
     We identify electrical activation paired with cholinergic signaling
-        as an activity pattern that promotes a negative threshold change
+        as an activity pattern that
+        promotes a \NEWCHANGE{lasting} negative threshold change
         and thus drives neurons into a signaling mode that favors the detection of known input patterns.

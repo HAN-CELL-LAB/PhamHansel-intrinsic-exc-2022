@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage{multirow,caption,float,fontsize}
+\usepackage[a4paper,margin=1in,landscape]{geometry}
+\renewcommand{\arraystretch}{1.25}
+\captionsetup{aboveskip=5pt,labelfont=bf,justification=justified,labelsep=period}
+\changefontsize[15pt]{14pt}
+
+\begin{document}
+
+\begin{table}[H]
+\centering
+\caption{S1 \textit{in vitro} (with \textbf{IP}) and V1 \textit{in vivo} data}
+    \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+        \hline Variable & \multicolumn{2}{l}{Source} & range & mean $\pm$ SEM & $n$ & $t$-stat & $p_t$ & $F$-stat & $p_F$ \\
+        \hline
+        \multirow{4}{*}{$V_{\mathrm{R}}$}&\multirow{3}{*}{S1}&pre&$[-72.6, -51.1]$&$-65.50 \pm  0.98$&$29$&\multirow{2}{*}{$0.3807$}&\multirow{2}{*}{$0.7063$}&\multirow{2}{*}{$0.6112$}&\multirow{2}{*}{$0.1990$}\\
+        & &post&$[-73.5, -45.9]$&$-65.73 \pm  1.25$&$29$& & & & \\
+        \cline{7-10} & &all&$[-73.5, -45.9]$&$-65.61 \pm  0.79$&$58$&\multirow{2}{*}{$-0.5433$}&\multirow{2}{*}{$0.5884$}&\multirow{2}{*}{$0.8747$}&\multirow{2}{*}{$0.6601$}\\
+        \cline{2-3} &\multicolumn{2}{l|}{V1}&$[-75.9, -49.1]$&$-64.83 \pm  1.25$&$26$& & & & \\\hline
+        \multirow{4}{*}{$V_{\mathrm{T}}$}&\multirow{3}{*}{S1}&pre&$[-46.7, -37.1]$&$-42.14 \pm  0.48$&$29$&\multirow{2}{*}{$0.1311$}&\multirow{2}{*}{$0.8966$}&\multirow{2}{*}{$0.4195$}&\multirow{2}{*}{$\mathbf{0.0248}^{*}$}\\
+        & &post&$[-48.9, -31.0]$&$-42.22 \pm  0.74$&$29$& & & & \\
+        \cline{7-10} & &all&$[-48.9, -31.0]$&$-42.18 \pm  0.44$&$58$&\multirow{2}{*}{$10.3571$}&\multirow{2}{*}{$\mathbf{1.4765e-16}^{***}$}&\multirow{2}{*}{$0.5066$}&\multirow{2}{*}{$\mathbf{0.0350}^{*}$}\\
+        \cline{2-3} &\multicolumn{2}{l|}{V1}&$[-61.3, -40.2]$&$-51.48 \pm  0.92$&$26$& & & & \\\hline
+        \multirow{4}{*}{$\Delta V_{\mathrm{TR}}$}&\multirow{3}{*}{S1}&pre&$[6.7, 29.2]$&$23.36 \pm  1.06$&$29$&\multirow{2}{*}{$-0.1988$}&\multirow{2}{*}{$0.8438$}&\multirow{2}{*}{$0.5331$}&\multirow{2}{*}{$0.1018$}\\
+        & &post&$[0.6, 37.0]$&$23.51 \pm  1.45$&$29$& & & & \\
+        \cline{7-10} & &all&$[0.6, 37.0]$&$23.43 \pm  0.89$&$58$&\multirow{2}{*}{$6.9342$}&\multirow{2}{*}{$\mathbf{8.6032e-10}^{***}$}&\multirow{2}{*}{$2.2875$}&\multirow{2}{*}{$\mathbf{0.0256}^{*}$}\\
+        \cline{2-3} &\multicolumn{2}{l|}{V1}&$[5.3, 21.4]$&$13.34 \pm  0.88$&$26$& & & & \\\hline
+    \end{tabular}
+\end{table}
+
+\end{document}
