@@ -8,7 +8,7 @@
   
   ``` bash 
   # if have not created venv and install pybtex
-  ./obtain-unusedlist.sh
+  ./create-venv.sh
   # then run this
   ./clean-bib.sh
   ```
