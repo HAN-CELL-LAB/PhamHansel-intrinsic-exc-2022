@@ -27,15 +27,19 @@ The inputs are generated at $X$, characterized by
     The term ``incomplete pattern'' in the context of the recognition task refers to a deviation from the known / learned pattern,
         in which components of the complete pattern are missing.
 
-\NEWCHANGE{Note that our model does not contain recurrent network components} \NEWCITE{\citep{Hopfield1982-ax}.}
-    \NEWCHANGEUNSURE{This selection was made as our goal is
-            to isolate emerging consequences of cell-autonomous intrinsic plasticity of neurons,
-            whose output function informs a measure of task performance.
-        It is anticipated that
-            with the recurrent, symmetric connectivity properties of a Hopfield model
-            the extracted features would be identical (i.e. benefits for task performance),
-            but additional complex functions might emerge.}
-        \footnote{Need to discuss}
+\NEWCHANGE{Note that our model does not contain recurrent network components}
+    \NEWCITE{\citep{Hopfield1982-ax}.}
+\NEWCHANGE{This selection was made as our goal is
+    to isolate emerging consequences of cell-autonomous intrinsic plasticity of neurons,
+        whose output function informs a measure of task performance.
+    It is anticipated that
+        with the recurrent connectivity properties of a Hopfield model
+            (recurrent connectivity within the input layer),
+        output layer activation would differ.
+    However, we expect that the consequences of threshold changes
+        in an output layer neuron for task performance
+        would principally qualitatively remain the same.
+}
 
 
 \subsubsection*{Selectivity and connectivity}
@@ -108,21 +112,11 @@ For each manipulation of $\Delta \theta$ in a selected output unit,
         and characterize the outputs at $Y$ to evaluate performance of \textit{recognition} (of known / learned patterns),
         via the true-positive rate (TPR) of \textit{only} the output whose threshold is changed with $\Delta \theta$.
     Activity in other output units is disregarded
-        (in other words, all the other outputs would be considered noise
-        \NEWCHANGEUNSURE{ or irrelevant; note that if threshold changes in multiple neurons were considered, the error rate is expected to differ}
-        \footnote{if we care only about the "affected neuron" I don't think it matters, this matters only when we consider the whole network error rate; or if the neurons can affect each other, like in a recurrent network.}
-        ).
-    \TOREMOVE{Additionally, TPR and other performance rates (TNR, FPR, FNR) are calculated
-        for varying values of $\alpha_W$ and overlap
-        and shown in {\autoref{supp:ffwd-recog-more}}
-        and {\autoref{supp:ffwd-recog-tradeoff-roc}}.}
+        (in other words, all the other outputs would be considered noise or irrelevant; note that if threshold changes in multiple neurons were considered, the error rate is expected to differ).
     Receiver operating characteristics
         (\NEWCHANGE{ROC; a method to show classification performance, graphically displayed as TPR vs FPR})
         analysis for recognition is plotted in
-        \NEWCHANGE{ {\autoref{fig:ffwd-recog-perf}}b}
-            \TOREMOVE{{\autoref{supp:ffwd-recog-tradeoff-roc}}
-        and the corresponding areas-under-the-curve (AUC) are shown
-            in {\autoref{supp:ffwd-recog-ROCAUC}}}.
+        \NEWCHANGE{{\autoref{fig:ffwd-recog-perf}}b}.
 
 \subsubsection*{Optimal activation threshold change}
 
@@ -158,7 +152,7 @@ We calculate resting and threshold potentials from \textit{in vitro} recordings
     \NEWCHANGE{Bath application of an mAChR agonist is intended
         to activate mAChRs that are primarily located
         on the extrasynaptic membrane of pyramidal cell dendrites and spines}
-        \NEWCITE{\citep{Yamasaki2010-di}.}
+        \NEWCITE{\citep{McCormick1985-la, Yamasaki2010-di}.}
     The somatic depolarization protocol in (i) consisted of
         10 depolarizing current pulses (50 ms duration) that
         were delivered at 10 Hz, followed by 2 seconds of holding current.
@@ -218,7 +212,24 @@ In addition, we determined the theoretically conceivable lower and upper thresho
         as the upper bound of threshold potentials.
     This relative refractory state is characterized
         by a reduction in AP amplitude after the first spike was fired
-        as well as a spike threshold at a more depolarized membrane potential
-        \TOREMOVE{(see {\autoref{supp:demo-refrac-thres}} for example)}.
+        as well as a spike threshold at a more depolarized membrane potential.
 
-\NEWCHANGE{The statistics reported would be mean $\pm$ SEM.}
+
+\subsubsection{Statistical analysis}
+
+\NEWCHANGE{The statistics were reported as mean $\pm$ SD.
+    Statistical significance was determined by using
+        the two-sample unpaired Student's $t$ test
+            (between-group comparison;
+            V1 vs S1 cortex)
+        and the paired Student's $t$ test
+            (within-group comparison of baseline vs post-manipulation changes;
+            plasticity experiments),
+        when appropriate.
+    The Pearson correlation coefficient was used
+        to statistically describe correlations between
+            spike output
+            and threshold potential (and related parameters).
+}
+
+

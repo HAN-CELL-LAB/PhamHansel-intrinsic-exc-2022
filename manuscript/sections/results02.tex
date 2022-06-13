@@ -20,21 +20,18 @@ The (in)completeness of the inputs is characterized by
     Here, we look at the effects of $\Delta \theta$ on the performance in a recognition task
         (focus on the output whose threshold is changed) (\autoref{fig:demo-ffwd-recog}c).
 
+\input{figures/Fig4}
+
 The results are shown in \autoref{fig:ffwd-recog-perf}a,
         recognition true positive rate (TPR) is shown in blue,
-        while the tradeoff between TPR and the false-positive rate, FPR, (TPR-FPR) is shown in red.
+        while the tradeoff between TPR and the false-positive rate, FPR, (TPR $-$ FPR) is shown in red.
     Because $N_Y=3$, $\alpha_W < 1/3$ would be lower than chance,
         and thus highly undesirable for recognition.
     Increased selectivity emphasizes relevant inputs and reduces the weight of irrelevant ones, thus benefitting both performance parameters.
 
-\input{figures/Fig4}
-
 The dependence of recognition performance on $\Delta\theta$ (true positive rate; TPR)
     appears sigmoidal, inverted with the sign of threshold change
-        (blue shaded lines in \autoref{fig:ffwd-recog-perf}a)
-        \TOREMOVE{{
-            \autoref{supp:ffwd-recog-more}},
-            {\autoref{supp:ffwd-recog-tradeoff-roc}}a}.
+        (blue shaded lines in \autoref{fig:ffwd-recog-perf}a).
     As expected, lowered thresholds allow for easier recognition of the output of interest, eventually reaching 100\% TPR.
     When the selectivity index is high and the inputs are mostly complete, the unit does not require decreased thresholds to reach maximal recognition.
     However, for a given input completeness, weaker selectivity requires a more pronounced threshold decrease to reach a set performance level.
@@ -43,29 +40,13 @@ The dependence of recognition performance on $\Delta\theta$ (true positive rate;
         when either the inputs become more insufficient or the network selectivity strength $\alpha_W$ is imperfect (\autoref{fig:ffwd-recog-perf}
         \NEWCHANGE{c,d}).
 
-\NEWCHANGEUNSURE{However}\footnote{might need to remove this entire paragraph},
-    in situations of high TPR recognition resulting from a strong threshold decrease,
-        the false-positive rate (FPR) will also be high,
-        since the affected output will be active even when the inputs come from other input patterns.
-    Inspecting the FPR curves,
-        \TOREMOVE{(
-            {\autoref{supp:ffwd-recog-more}},
-            {\autoref{supp:ffwd-recog-tradeoff-roc}}a)}
-        \footnote{unclear how to keep this whole paragraph without referencing a supp figure},
-        we observe increases of FPR monotonically with decreases of thresholds.
-    With $\alpha_W < 1/3$ (first column in panel a), the weights distribute more strongly for irrelevant inputs than for relevant inputs
-        (\autoref{fig:ffwd-recog-perf}a, left-most column),
-        hence a strong threshold decrease would lead to recognition of the other outputs more readily than the output of interest,
-        generally causing higher false positives than true positives
-        (i.e. FPR $>$ TPR
-        \TOREMOVE{, see also {\autoref{supp:ffwd-recog-tradeoff-roc}}b where FPR and TPR are plotted against each other}).
-    Decreased $\alpha_W$ worsens the outcome and leads to higher FPR
-        as the affected output will be more easily evoked from strong irrelevant inputs.
-    With stronger selectivity index (higher $\alpha_W$) without overlap,
-        input completeness has less of an effect on FPR changes compared to TPR
-        \TOREMOVE{(compare the top right sub-panels in {\autoref{supp:ffwd-recog-tradeoff-roc}}a)}.
-    Overall, increased input incompleteness leads to decreases of FPR
-        as irrelevant inputs will have less of a chance to evoke responses in the relevant output unit $Y$.
+\NEWCHANGEUNSURE{Generally, FPR monotonically increases with decreases of thresholds.
+    And overall, increased input incompleteness leads to decreases of FPR
+        as irrelevant inputs will have less of a chance
+        to evoke responses in the relevant output unit $Y$.
+    That would obviously be more beneficial for recognition
+        (see ROC curves in {\autoref{fig:ffwd-recog-perf}}b).
+}\footnote{See if this works now}
 
 As the goal is to maximize recognition performance without enhancing the false recognition rate,
         we want to maximize TPR while minimizing FPR,
@@ -94,12 +75,7 @@ Aside from the imperfection of selectivity ($\alpha_W < 1$),
 
 As defined, recognition TPR is not really affected by the selectivity overlap,
         as we focus only on output units encoding the learned object pattern
-        (\autoref{fig:ffwd-recog-perf}a,
-        \TOREMOVE{{\autoref{supp:ffwd-recog-more}}, {\autoref{supp:ffwd-recog-tradeoff-roc}}a}).
-    \TOREMOVE{The only effect that selectivity overlap has on recognition would be increased FPR
-        ({\autoref{supp:ffwd-recog-more}},
-        {\autoref{supp:ffwd-recog-tradeoff-roc}}),
-        especially with more complete inputs and an increased selectivity index.}
+        (\autoref{fig:ffwd-recog-perf}a).
     This is because the high overlap allows the shared inputs
         to evoke responses in the affected output too easily
         when the input pattern actually belongs to another output class.
@@ -114,22 +90,12 @@ As defined, recognition TPR is not really affected by the selectivity overlap,
 
 A well-known analysis tool for examining binary classification performance is the ROC graph.
     As expected,
-        \TOREMOVE{either}
         increased input completeness
-        \TOREMOVE{or selectivity strength}
         would increase recognition performance
-        \NEWCHANGE{{\autoref{fig:ffwd-recog-perf}b}}
-        \TOREMOVE{for sufficient $\alpha_W$ ($ > 1/3$)
-            as shown in {\autoref{supp:ffwd-recog-tradeoff-roc}}b
-            and by examining the increase of the AUC of the ROC as a function of either parameter
-            (see {\autoref{supp:ffwd-recog-ROCAUC}})}.
+        \NEWCHANGE{{\autoref{fig:ffwd-recog-perf}b}}.
     Increase in selectivity overlap decreases the overall performance of the recognition task
         (compare top and bottom panels of
-        \NEWCHANGE{{\autoref{fig:ffwd-recog-perf}b})}
-        \TOREMOVE{{\autoref{supp:ffwd-recog-tradeoff-roc}}b,
-            which is further exemplified by
-            a slower increase of AUC of as function of $\alpha_W$
-            or input completeness ({\autoref{supp:ffwd-recog-ROCAUC}})}.
+        \NEWCHANGE{{\autoref{fig:ffwd-recog-perf}b}}).
 
 \subsection{Biological threshold potentials and activity-dependent plasticity}
 
@@ -155,16 +121,18 @@ We obtained resting and threshold potentials
         in the laboratory of Dr. Nicholas Priebe (University of Texas at Austin)
         and requested measures have been made available to us.
 
+\input{figures/Fig5}
+
 In this data set, resting potentials $V_R$ ranged from about $-75$ mV to $-50$ mV
-            ($-64.83 \pm 1.25$ mV,
+            ($-64.83 \pm 6.39$ mV,
             $n = 26$ cells from 3 animals)
         and threshold potentials $V_T$ ranged from about $-60$ mV to $-40$ mV
-            ($-51.48 \pm 0.92$ mV,
+            ($-51.48 \pm 4.69$ mV,
             $n = 26$).
     The difference between resting and threshold potentials
         $\Delta V_{TR}$ in these recordings (the distance in mV)
             \NEWCHANGE{ranged from $5$ to $22$ mV}
-            ($13.34 \pm 0.88$ mV,
+            ($13.34 \pm 4.48$ mV,
             $n = 26$)
         (\autoref{fig:ffwd-biol-data}).
     This analysis shows the range of threshold potentials assumed
@@ -183,8 +151,8 @@ Our own \textit{in vitro} recordings
     We observe that the resting potentials $V_R$ in S1 assume values
         that are similar to those seen in the V1 cortex of awake macaques,
         roughly in the range of $-75$ mV to \NEWCHANGE{$-45$} mV
-            \NEWCHANGE{(pre $= -65.50 \pm 0.98$ mV,
-                post $= -65.73 \pm 1.25$ mV,
+            \NEWCHANGE{(pre $= -65.50 \pm 5.25$ mV,
+                post $= -65.73 \pm 6.72$ mV,
                 paired pre-vs-post $t$-stat $= 0.3807$,
                 $p = 0.7063$,
                 $n = 29$ cells)}.
@@ -195,8 +163,8 @@ Our own \textit{in vitro} recordings
     However, the threshold potentials $V_T$ occupy
         a more positive range than those observed in the V1 recordings;
         we observed a range from about $-50$ mV to \NEWCHANGE{$-30$} mV
-            \NEWCHANGE{(pre $= -42.14 \pm 0.48$ mV,
-                post $= -42.22 \pm 0.74 $ mV,
+            \NEWCHANGE{(pre $= -42.14 \pm 2.59$ mV,
+                post $= -42.22 \pm 4.00 $ mV,
                 paired $t$-stat $= 0.1311$,
                 $p = 0.8966$,
                 $n = 29$),
@@ -206,77 +174,18 @@ Our own \textit{in vitro} recordings
             },
         leading to a larger difference between resting and threshold potentials
             \NEWCHANGE{($\Delta V_{TR}$) in S1 than in V1
-                (V1 $= 13.34 \pm 0.88$ mV,
-                S1 pre $= 23.36 \pm 1.06$ mV,
-                S1 post $= 23.51 \pm 1.45$ mV;
+                (V1 $= 13.34 \pm 4.48$ mV,
+                S1 pre $= 23.36 \pm 5.70$ mV,
+                S1 post $= 23.51 \pm 7.80$ mV;
                 V1-vs-S1 two-sample $t$-stat $= 6.9342$,
                 $p = 8.6032 \times 10^{-10}$)}.
     \NEWCHANGE{A caveat of our V1 to S1 comparisons certainly is that
-            the values were taken from different recordings conditions
+            the values were taken from different recording conditions
             (\textit{in vivo} for V1,
             \textit{in vitro} -- without an attempt to ``activate'' the slice -- for S1).
         Note, however, that the}
         finding of a larger $\Delta V_{TR}$ corresponds
         to observations made in S1 cortex of intact rats \citep{Brecht2003-vf}.
-
-\input{figures/Fig5}
-
-\NEWCHANGE{Additionally, we also compare the pre- and post-induction
-        membrane potential variables ($\Delta V_{TR}, V_T, V_R$)
-        within each group separately,
-        using the Student paired $t$-tests.
-    We observed significant negative threshold $V_T$ changes
-        with paired electric and cholinergic activation
-            ($-1.96 \pm 0.79$ mV,
-            $t$-stat $= 2.4897$,
-            $p = 0.0375$,
-            $n=9$),
-        but not with electric
-            ($0.23 \pm 0.72$ mV,
-            $t$-stat $= -0.3210$,
-            $p = 0.7555$,
-            $n = 10$)
-        or cholinergic activation alone
-            ($1.29 \pm 1.51$ mV,
-            $t$-stat $= -0.8549$,
-            $p = 0.4148$,
-            $n = 10$).
-    We did not observe any significant differences within each group for
-        the other two membrane potential variables $\Delta V_{TR}, V_R$.
-}
-
-Significant negative threshold changes were observed with paired electric and cholinergic activation (-1.96 mV +/- 2.37 SD; n=9; p=0.0375; paired Student's t-test), but not with electric (+0.23 mV +/- 2.28 SD; n=10; p=0.7544) or cholinergic activation alone (+1.29 +/- 4.76 SD; n=10; p=0.4150).
-
-We cannot fit the thresholds observed directly to our model shown in \autoref{fig:ffwd-recog-perf}a,
-        but made an attempt to approximate minimal and maximal threshold potential values
-        that correspond to the $-0.5$ and $0.5$ edges of the model plots.
-    As the spike threshold $V_T$ cannot be lower than the resting potential $V_R$,
-        we accepted the average resting potential measured in our recordings
-        as an approximation of
-        $\theta_{\mathrm{min}} = 0, \Delta \theta_{\mathrm{min}} = -0.5$.
-    The value obtained from our recordings
-        \NEWCHANGE{($n=29$) is $-65.61$ mV}
-        (combined pre and post measurements).
-
-As the theoretically available most positive threshold bound
-        $\theta_{\mathrm{max}} = 0, \Delta \theta_{\mathrm{max}} = 0.5$,
-        we accepted the membrane potential at which action potentials are evoked
-            from a depolarizing pulse when the neuron is in a (relative) refractory state
-        \TOREMOVE{(see {\autoref{supp:demo-refrac-thres}})}.
-    In a set of new recordings, this value was determined to be $-30.7$ mV
-        ($n=4$; \autoref{fig:ffwd-biol-data}c).
-    Therefore, the threshold shifts available for optimization of performance in the recognition task
-        are limited to a maximal range of about $35$ mV.
-    Note that in our set of
-        \NEWCHANGE{$29$ recordings},
-        the range of ``real'' (measured in the non-refractory state) threshold potentials
-        was about
-        \NEWCHANGEUNSURE{$10-15$ mV wide}\footnote{Is this the bounds or average of $\Delta V_{TR}$}.
-    Although this observation does not exclude the possibility that larger changes can take place,
-        in particular with repeated instead of single activation periods,
-        it seems likely (and plausible) that under physiological conditions
-            the range of assumed threshold potentials
-            is smaller than the theoretically available one.
 
 The \textit{in vivo} V1 data set \citep{Li2020-ej} from the Priebe laboratory does not contain plasticity data,
         but our own published recordings from L2/3 pyramidal neurons in S1 mouse cortex \textit{in vitro} do \citep{Gill2020-wy}.
@@ -293,6 +202,54 @@ The \textit{in vivo} V1 data set \citep{Li2020-ej} from the Priebe laboratory do
         and therefore qualify as efficient IP protocols \autoref{fig:ffwd-biol-data}d.
     Changes in threshold potential have not been analyzed and reported in \cite{Gill2020-wy},
         but are examined here.
+
+\NEWCHANGE{Significant negative threshold changes were observed
+    with paired electric and cholinergic activation
+        ($-1.96 \pm 2.37$ mV,
+        paired Student's $t$-stat $= 2.4897$,
+        $p = 0.0375$,
+        $n=9$),
+    but not with electric
+        ($0.23 \pm 2.28$ mV,
+        $t$-stat $= -0.3210$,
+        $p = 0.7555$,
+        $n = 10$)
+    or cholinergic activation alone
+        ($1.29 \pm 4.76$ mV,
+        $t$-stat $= -0.8549$,
+        $p = 0.4148$,
+        $n = 10$).
+}
+
+We cannot fit the thresholds observed directly to our model shown in \autoref{fig:ffwd-recog-perf}a,
+        but made an attempt to approximate minimal and maximal threshold potential values
+        that correspond to the $-0.5$ and $0.5$ edges of the model plots.
+    As the spike threshold $V_T$ cannot be lower than the resting potential $V_R$,
+        we accepted the average resting potential measured in our recordings
+        as an approximation of
+        $\theta_{\mathrm{min}} = 0, \Delta \theta_{\mathrm{min}} = -0.5$.
+    The value obtained from our recordings
+        \NEWCHANGE{($n=29$) is $-65.61$ mV}
+        (combined pre and post measurements).
+
+As the theoretically available most positive threshold bound
+        $\theta_{\mathrm{max}} = 0, \Delta \theta_{\mathrm{max}} = 0.5$,
+        we accepted the membrane potential at which action potentials are evoked
+            from a depolarizing pulse when the neuron is in a (relative) refractory state.
+    In a set of new recordings, this value was determined to be $-30.7$ mV
+        ($n=4$; \autoref{fig:ffwd-biol-data}c).
+    Therefore, the threshold shifts available for optimization of performance in the recognition task
+        are limited to a maximal range of about $35$ mV.
+    Note that in our set of
+        \NEWCHANGE{$29$ recordings},
+        the range of ``real'' (measured in the non-refractory state) threshold potentials ($V_T$) was about $10-15$ mV wide.
+    Although this observation does not exclude the possibility that larger changes can take place,
+        in particular with repeated instead of single activation periods,
+        it seems likely (and plausible) that under physiological conditions
+            the range of assumed threshold potentials
+            is smaller than the theoretically available one.
+
+\NEWCHANGE{How does this threshold potential influence the spike output in our recordings?}
     First, we notice that threshold plasticity ($V_T^{\Delta}, \Delta V_{TR}^{\Delta}$) is bidirectional,
         even though the change in spike number ($n_{spk}^{\Delta}$) is largely unidirectional.
     This means that in some cells the threshold for spike firing is enhanced,
@@ -306,46 +263,24 @@ The \textit{in vivo} V1 data set \citep{Li2020-ej} from the Priebe laboratory do
             but not with the changes of the other two membrane potential variables
             ($ p = 0.0996 $ for $V_{T}^{\Delta}$
             and $ p = 0.3547$ for $V_{R}^{\Delta}$).
-        However, we do not observe any significant effect of the experimental groups
-            on any of the response changes
-            ($n_{spk}^{\Delta}, \Delta V_{TR}^{\Delta}, V_{T}^{\Delta}, V_{R}^{\Delta}$)
-            under four separate one-way ANOVA tests
-            ($F$-stats = $0.5681,1.2481, 2.2697, 0.7772$
-            and $p = 0.5735, 0.3037, 0.1234, 0.4701$ respectively);
-            nor do we find any significant effect of the experiment groups on
-            the multivariate response changes using
-            the one-way multivariate ANOVA test
-            (\texttt{MATLAB/manova1},
-            $d=0$,
-            $p[d=0] = 0.5012$,
-            $p[d=1] = 0.4722$)
-    }.
-
-\TOREMOVE{
-Tested with multi-way ANOVA with pairwise interaction model
-    with 3 main variables (%
-        experimental groups,
-        threshold potential change $V_T^{\Delta}$
-        and resting potential change $V_R^{\Delta}$)
-        \footnote{$\Delta V_{TR}^{\Delta}$ is not included
-            as it depends on both $V_T^{\Delta}$, $V_R^{\Delta}$},
-    the change in spike number $n_{spk}^{\Delta}$ significantly
-        depends on threshold change $V_T^{\Delta}$
-        ($F = 5.3, p = 0.0386$).
-    This finding hints at differences in the efficacy of these experimental manipulations to initiate threshold potential changes and functionally couple them to the magnitude of the spike output.
-}
+            This observation does not imply that $V_T$ and $V_R$ have no impact on spike firing.
+            What it shows is that
+                -- as can be predicted from the definition of $\Delta V_{TR}$ as
+                the actual membrane potential difference that has to be overcome to reach threshold
+                -- spike firing is most sensitive to changes in $\Delta V_{TR}$.
+    }
 
 Our model on the relationship
         between performance in a recognition task and changes in the threshold potential
         suggests that under a wide range of conditions
-        task performance benefits from a reduction in the spike threshold.
+        task performance benefits from a reduction in the
+        \NEWCHANGE{spike threshold distance, $\Delta V_{TR}$}.
     The experimental data presented in \cite{Gill2020-wy} allow us to examine
         what type of neuronal activation
-        causes a negative threshold shift
+        causes a negative \NEWCHANGE{$\Delta V_{TR}$} shift
         and therefore alter the neuron's coding strategy to one that favors the recognition of known / learned input patterns,
         in particular when the presented pattern is incomplete.
-    \NEWCHANGE{As a further test to}
-        assess differences in the efficacy to promote negative threshold changes,
+    To assess differences in the efficacy to promote negative threshold changes,
         we applied $\chi^2$ test of independence
         for the distribution of threshold potential changes
         triggered by the three types of manipulations used (electric, cholinergic and cholinergic paired with electric),
@@ -359,18 +294,12 @@ Our model on the relationship
                 that might offset some effects of the threshold change,
         and b) cells with a ``null'' direction change in threshold potential
             were counted as ``non-negative''.
-    Based on the distribution of threshold change values
-        \NEWCHANGE{in which their relative changes do not exceed $1\%$},
-        \TOREMOVE{({\autoref{supp:s1-data-dV_TR}})},
-        we identified \NEWCHANGE{four} recordings,
-        in which these \NEWCHANGE{potential} values clustered around zero change.
-    To define a margin threshold change that would separate ``null'' from ``not null'' changes,
-        we calculated the standard deviation from these recordings
-        \NEWCHANGE{(SD = $0.0805$)}
-        and set the margin to a value that is three times as large,
-        \NEWCHANGE{$0.2414$} mV.
-    Thus, a negative threshold change has to pass \NEWCHANGE{$-0.2414$} mV
-        to fall into the category ``negative threshold change''.
+    \NEWCHANGE{Based on the distribution of threshold changes,
+        we identified four recordings,
+            in which these potential values clustered around zero change,
+            and whose percentual change remained $< 1\%$.
+        We therefore defined a negative threshold change as
+            one exceeding the $1\%$ threshold distance}.
     With this definition of categories,
         in \NEWCHANGE{$7/9$ recordings}
             with paired cholinergic and electric activation
@@ -380,6 +309,6 @@ Our model on the relationship
             in which cholinergic activation was applied alone,
         and in $1/10$ recordings in which electric activation was applied alone
         (\autoref{fig:ffwd-biol-data}e).
-    The paired cholinergic activation was the only efficient activation pattern to promote a negative threshold change
+    The paired cholinergic activation was the only activation pattern
+        to promote a \NEWCHANGE{significant} negative threshold change
         \NEWCHANGE{($\chi^2 = 9.6504; p = 0.00802$)}.
-
