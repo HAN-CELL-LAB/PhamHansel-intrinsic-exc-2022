@@ -1,0 +1,24 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{resources/penguins-template}
+\usepackage{pgffor}
+\usepackage{mathptmx}
+
+\sfcode`.=1200
+
+\begin{document}
+
+\renewcommand{\figurename}{Pham and Hansel, Figure}
+
+\foreach \letter in {
+Fig1.pdf, Fig2.pdf, Fig3.pdf, Fig4.pdf, Fig5.pdf} {
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,center]{figures/\letter}
+    \caption{}
+\end{figure}
+\newpage
+}
+
+
+
+\end{document}

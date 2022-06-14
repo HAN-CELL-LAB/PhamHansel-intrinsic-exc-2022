@@ -1,6 +1,10 @@
 output/*
-
+submission/*
 figures/*
+*.docx
+*.dotx
+*.odt
+*.zip
 !figures/.gitkeep
 !figures/*.tex
 
