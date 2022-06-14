@@ -40,13 +40,13 @@ The dependence of recognition performance on $\Delta\theta$ (true positive rate;
         when either the inputs become more insufficient or the network selectivity strength $\alpha_W$ is imperfect (\autoref{fig:ffwd-recog-perf}
         \NEWCHANGE{c,d}).
 
-\NEWCHANGEUNSURE{Generally, FPR monotonically increases with decreases of thresholds.
-    And overall, increased input incompleteness leads to decreases of FPR
+\NEWCHANGE{Generally, FPR monotonically increases with decreases in threshold values.
+    Overall, decreased input completeness leads to decreases of FPR
         as irrelevant inputs will have less of a chance
         to evoke responses in the relevant output unit $Y$.
-    That would obviously be more beneficial for recognition
+    This would be more beneficial for recognition performance
         (see ROC curves in {\autoref{fig:ffwd-recog-perf}}b).
-}\footnote{See if this works now}
+}
 
 As the goal is to maximize recognition performance without enhancing the false recognition rate,
         we want to maximize TPR while minimizing FPR,
@@ -58,7 +58,8 @@ As the goal is to maximize recognition performance without enhancing the false r
         \autoref{fig:ffwd-recog-perf}\NEWCHANGE{d}$_2$),
         FPR is higher than TPR as irrelevant input strengths are now stronger than relevant connections,
         hence TPR $-$ FPR $<$ 0.
-    In moderate selectivity strengths, these difference curves are negatively affected by increased input incompleteness
+    In moderate selectivity strengths, these difference curves
+        are negatively affected by increased input incompleteness
         and require more negative $\Delta \theta_{\mathrm{optim}}$ to reach their maximum
         (\autoref{fig:ffwd-recog-perf}\NEWCHANGE{d}).
 
@@ -113,6 +114,8 @@ The purpose of re-analyzing existing biological data sets is twofold.
 
 \subsubsection*{Threshold potentials obtained from V1 \textit{in vivo} recordings}
 
+\input{figures/Fig5}
+
 We obtained resting and threshold potentials
         from published whole-cell patch-clamp recordings
         from L2/3 pyramidal neurons in the primary visual cortex (V1)
@@ -120,8 +123,6 @@ We obtained resting and threshold potentials
     These recordings were performed
         in the laboratory of Dr. Nicholas Priebe (University of Texas at Austin)
         and requested measures have been made available to us.
-
-\input{figures/Fig5}
 
 In this data set, resting potentials $V_R$ ranged from about $-75$ mV to $-50$ mV
             ($-64.83 \pm 6.39$ mV,
@@ -203,7 +204,7 @@ The \textit{in vivo} V1 data set \citep{Li2020-ej} from the Priebe laboratory do
     Changes in threshold potential have not been analyzed and reported in \cite{Gill2020-wy},
         but are examined here.
 
-\NEWCHANGE{Significant negative threshold changes were observed
+\NEWCHANGE{Significant negative threshold changes $V_T$ were observed
     with paired electric and cholinergic activation
         ($-1.96 \pm 2.37$ mV,
         paired Student's $t$-stat $= 2.4897$,
@@ -219,6 +220,8 @@ The \textit{in vivo} V1 data set \citep{Li2020-ej} from the Priebe laboratory do
         $t$-stat $= -0.8549$,
         $p = 0.4148$,
         $n = 10$).
+    Thus, cholinergic co-activation provides the most efficient means
+        to trigger a lowering of the spike threshold.
 }
 
 We cannot fit the thresholds observed directly to our model shown in \autoref{fig:ffwd-recog-perf}a,
@@ -233,10 +236,10 @@ We cannot fit the thresholds observed directly to our model shown in \autoref{fi
         (combined pre and post measurements).
 
 As the theoretically available most positive threshold bound
-        $\theta_{\mathrm{max}} = 0, \Delta \theta_{\mathrm{max}} = 0.5$,
+        $\theta_{\mathrm{max}} = 1, \Delta \theta_{\mathrm{max}} = 0.5$,
         we accepted the membrane potential at which action potentials are evoked
             from a depolarizing pulse when the neuron is in a (relative) refractory state.
-    In a set of new recordings, this value was determined to be $-30.7$ mV
+    In a set of new recordings, this value was determined to be $-30.71$ mV
         ($n=4$; \autoref{fig:ffwd-biol-data}c).
     Therefore, the threshold shifts available for optimization of performance in the recognition task
         are limited to a maximal range of about $35$ mV.
@@ -259,7 +262,7 @@ As the theoretically available most positive threshold bound
     \NEWCHANGE{Additionally, we observe significant negative association between
             the changes in spike number ($n_{spk}^{\Delta}$) and
             threshold-to-rest distance changes ($\Delta V_{TR}^{\Delta}$)
-            ($\rho = -0.41, R^2 = 0.17, p = 0.02753$),
+            ($\rho = -0.41, R^2 = 0.17, p = 0.0275$),
             but not with the changes of the other two membrane potential variables
             ($ p = 0.0996 $ for $V_{T}^{\Delta}$
             and $ p = 0.3547$ for $V_{R}^{\Delta}$).

@@ -38,7 +38,7 @@ The inputs are generated at $X$, characterized by
         output layer activation would differ.
     However, we expect that the consequences of threshold changes
         in an output layer neuron for task performance
-        would principally qualitatively remain the same.
+        would qualitatively remain the same.
 }
 
 
@@ -112,7 +112,8 @@ For each manipulation of $\Delta \theta$ in a selected output unit,
         and characterize the outputs at $Y$ to evaluate performance of \textit{recognition} (of known / learned patterns),
         via the true-positive rate (TPR) of \textit{only} the output whose threshold is changed with $\Delta \theta$.
     Activity in other output units is disregarded
-        (in other words, all the other outputs would be considered noise or irrelevant; note that if threshold changes in multiple neurons were considered, the error rate is expected to differ).
+        (in other words, all the other outputs would be considered noise
+        \NEWCHANGE{or irrelevant; note that if threshold changes in multiple neurons were considered, the error rate is expected to differ}).
     Receiver operating characteristics
         (\NEWCHANGE{ROC; a method to show classification performance, graphically displayed as TPR vs FPR})
         analysis for recognition is plotted in
@@ -138,7 +139,7 @@ We obtained the \textit{in vivo} resting and threshold potentials
         (see summary of data in \autoref{fig:ffwd-biol-data}a).
     We denote membrane thresholds as $V_T$,
         resting potentials as $V_R$
-        and the distance between them as $V_{TR} = V_T - V_R$.
+        and the distance between them as $\Delta V_{TR} = V_T - V_R$.
     The biological data statistics are reported as (mean $\pm$ SEM).
 
 \subsubsection*{S1 \textit{in vitro} biological thresholds}
@@ -195,13 +196,15 @@ For \textit{baseline} (pre-induction; denote with superscript $x^{\mathrm{0}}$ f
     Additionally in this figure panel, linear fits, along with their p-values and $R^2$
         are shown for functional excitability changes
         (number of spikes $n_{spk}^{\Delta}$)
-        related to changes in membrane potential measures ($V_R, V_T, \Delta V_{TR}$).
+        related to changes in membrane potential measures
+        ($V_R^{\Delta}, V_T^{\Delta}, \Delta V_{TR}^{\Delta}$).
 
 In addition, we determined the theoretically conceivable lower and upper threshold bounds
         which, for illustrative purposes, are shown together
         with our modeling results in \autoref{fig:ffwd-biol-data}c.
     We define the biological lower bound
-        as the average of all resting potentials in \cite{Gill2020-wy}.
+        as the average of all resting potentials in \cite{Gill2020-wy}
+        \NEWCHANGE{, plus new experiments}.
     To define the biological threshold upper bound,
         we obtained recordings from 4 additional S1 cells
         \citep[same recording conditions as in][]{Gill2020-wy}.
@@ -217,7 +220,7 @@ In addition, we determined the theoretically conceivable lower and upper thresho
 
 \subsubsection{Statistical analysis}
 
-\NEWCHANGE{The statistics were reported as mean $\pm$ SD.
+\NEWCHANGE{
     Statistical significance was determined by using
         the two-sample unpaired Student's $t$ test
             (between-group comparison;
@@ -230,6 +233,10 @@ In addition, we determined the theoretically conceivable lower and upper thresho
         to statistically describe correlations between
             spike output
             and threshold potential (and related parameters).
+    All statistics are reported as mean $\pm$ SD.
+    The chi-square test is used to examine
+        the distribution of negative vs non-negative threshold shifts
+        in the plasticity experiments.
 }
 
 
