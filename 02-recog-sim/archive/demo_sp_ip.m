@@ -35,7 +35,7 @@ title('f-I curve', 'fontsize', 80);
 %%
 x = -10:0.01:10; 
 g = 1000; 
-figure; hold on; 
+figure('position', [0,0,1,1]); hold on; 
 plot(x, 1./(1+exp(-g*x)), '-k', 'linewidth', 10);
 plot(x, 1./(1+exp(-g*(x - 5))), '-r', 'linewidth', 10);
 plot(x, 1./(1+exp(-g*(x + 5))), '-b', 'linewidth', 10);
@@ -65,7 +65,9 @@ ip_color = [0.7,0.7,0.7,0.5];
 
 x = -10:0.01:10; 
 g = 1000; 
-figure; hold on; 
+
+figure('position', [0,0,1,1]);
+hold on; 
 plot(x, 1./(1+exp(-g*x)), '-k', 'linewidth', 10);
 plot(x, 1./(1+exp(-g*(x - 5))), '-', 'color', ip_color,  'linewidth', 10);
 plot(x, 1./(1+exp(-g*(x + 5))), '-', 'color', ip_color, 'linewidth', 10);
@@ -88,4 +90,6 @@ annotation('textarrow',[0.535, 0.7],[0.5, 0.5], ...
 set(gca, 'xcolor', 'none', 'ycolor', 'none'); 
 title('activation', 'fontsize', 100); 
 
-export_fig('figures/demo_ip_heaviside', '-r200', '-p0.02');
+exportgraphics(gcf, 'figures/demo/demo_ip_heaviside.pdf');
+% export_fig('figures/demo_ip_heaviside', '-r200', '-p0.02');
+close; 

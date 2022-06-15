@@ -1,27 +1,35 @@
-function res = plot_examples_combo_at_X(N, num_thres, example_id, distrib_info, willplot, fig_subpath, show_figdescription, exportfig_type)
+function res = plot_examples_combo_at_X(N, num_thres, example_id, distrib_info, willplot, fig_path, show_figdescription)
 if ~exist('willplot', 'var'), willplot = false; end 
 if ~exist('show_figdescription', 'var'), show_figdescription = true; end 
-if ~exist('fig_subpath', 'var'), fig_subpath = ''; end 
-if ~exist('exportfig_type', 'var'), exportfig_type = '-r300'; end
 
 distrib_type = distrib_info.type;
+
+if ischar(example_id)
+    fig_name_prefix = example_id;
+elseif isnumeric(example_id)
+    fig_name_prefix = sprintf('example%02d', example_id);
+else 
+    error('`example_id` can only be a number or string');
+end
+
 switch lower(distrib_type)
     case 'lognorm'
         sigma_lognorm = distrib_info.param;
         genWfun = @(varargin) lognrnd(0,sigma_lognorm,varargin{:});
         distrib_str = sprintf('$\\sigma_{\\mathrm{lognorm}} = %.2f$', sigma_lognorm);
-        fig_name = sprintf('combo-at-X_lognorm-sigma-%.2f_example%02d', sigma_lognorm, example_id); 
+        fig_name = sprintf('%s_combo-at-X_lognorm-sigma-%.2f', sigma_lognorm, fig_name_prefix);
     case 'equal'
         genWfun = @(varargin) ones(varargin{:});
         distrib_str = 'equal weights';
-        fig_name = sprintf('combo-at-X_equal_example%02d', example_id); 
+        fig_name = sprintf('%s_combo-at-X_equal', fig_name_prefix); 
     case 'uniform'
         genWfun = @(varargin) rand(varargin{:});
         distrib_str = 'weights from uniform distribution before normalized';
-        fig_name = sprintf('combo-at-X_uniform_example%02d', example_id); 
+        fig_name = sprintf('%s_combo-at-X_uniform', fig_name_prefix);
     otherwise
         error('"%s" as type is not allowed', distrib_type);
 end
+
 description_str = '$Y=1$ if $\sum_i W_i x_i > \theta$';
 
 fig_description =  sprintf(['N = %d ' newline '%s' newline '%s'], N, description_str, distrib_str);
@@ -101,6 +109,6 @@ set(ax_weight, 'xcolor', 'none');
 xlabel(ax_spike, {'threshold $\theta$','(white $\sim Y = 1$)'});
 title(ax_thres, '\# of comb. with $Y=1$');
 
-export_fig(fullfile('figures', fig_subpath, fig_name), exportfig_type, '-p0.02'); 
+exportgraphics(gcf, fullfile(fig_path, [fig_name '.pdf']))
 close; 
 end

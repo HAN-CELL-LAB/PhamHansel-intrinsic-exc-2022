@@ -1,10 +1,14 @@
-clc; clear; close all;
-run start_up.m
+clc; clear; close all; 
+run start_up; 
+
+fig_path = fullfile('figures/toy-recog');
+if ~exist(fig_path, 'dir')
+    mkdir(fig_path);
+end
 
 %% Precursors for Fig1's
 N = 10;
 num_thres = 100;
-fig_subpath = 'official';
 
 %% Plot examples
 graphic_reset(25, ...
@@ -17,14 +21,10 @@ graphic_reset(25, ...
     'DefaultAxesLabelFontSize', 1.2, ...
     'DefaultStemlineWidth', 1.5);
 
-num_examples = 3;
 willplot = true;
 
-% Fig 1a
-plot_examples_combo_at_X(N, num_thres, 1, struct('type', 'equal'), willplot, fig_subpath, false);
-
-% Fig 1b
-arrayfun(@(id) plot_examples_combo_at_X(N, num_thres, id, struct('type', 'uniform'),willplot,fig_subpath, false), 1:num_examples);
+plot_examples_combo_at_X(N, num_thres, 'example-equal', struct('type', 'equal'), willplot, fig_path, false);
+plot_examples_combo_at_X(N, num_thres, 'example-uniform', struct('type', 'uniform'), willplot,fig_path, false);
 
 %% Plot summary
 close all; 
@@ -88,8 +88,6 @@ end
 
 despline('all')
 
-fig_name = fullfile('figures', fig_subpath, 'Fig1cd');
-export_fig(fig_name,  '-r300', '-p0.02');
+fig_name = fullfile(fig_path, 'summary.pdf');
+exportgraphics(gcf, fig_name);
 pause(0.5); close;
-
-

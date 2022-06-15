@@ -1,7 +1,8 @@
+clc; clear; close all; 
 run start_up.m;
 
 %% Load data
-load('data/discrim_vs_recog_data.mat', ...
+load('data/recog_data.mat', ...
     'results_all', 'results_dim_description', ...
     'def_opts', 'param_opts');
 
@@ -10,23 +11,13 @@ if ~exist(fig_path, 'dir')
     mkdir(fig_path);
 end
 
-%% Adding L2 norm of recognition rates
-results_all.recognition_L2_truerates = sqrt(results_all.recognition_TPR.^2 + results_all.recognition_TNR.^2);
-results_all.recognition_L2_falserates = sqrt(results_all.recognition_FPR.^2 + results_all.recognition_FNR.^2);
-
-results_all.recognition_L1_truerates = (results_all.recognition_TPR + results_all.recognition_TNR);
-results_all.recognition_L1_falserates = (results_all.recognition_FPR + results_all.recognition_FNR);
-
-tradeoff_lambda = 1; 
-results_all.recognition_postradeoffs = results_all.recognition_TPR - tradeoff_lambda * results_all.recognition_FPR; 
+results_all.recognition_postradeoffs = results_all.recognition_TPR - results_all.recognition_FPR; 
 
 %% Vectors of parameters
 dthres_vec = linspace(def_opts.rng_dthres(1), def_opts.rng_dthres(2), def_opts.num_dthres);
 alpha_W_vec = param_opts.alpha_W;
 percent_complete_input_vec = param_opts.percent_complete_input;
 num_overlap_per_group_vec = param_opts.num_overlap_per_group;
-
-plot_fields = fieldnames(results_all);
 
 %% Plot ROC lines
 common_norm_dthres_range = [-0.5, 0.5]; 
@@ -46,7 +37,6 @@ cmap_pairs = {return_colorbrewer('Reds', length(percent_complete_input_vec)) * 0
     return_colorbrewer('Blues', length(percent_complete_input_vec)) * 0.9};
 
 nearest_select_alpha = [0.25, 0.50, 0.6, 0.75, 1];
-% nearest_select_alpha = [0.50, 0.6, 0.75, 0.85, 1];
 nearest_select_novrl = [0, 20];
 
 select_alpha_ind = arrayfun(@(x) find_nearest(alpha_W_vec, x, 'ind'), nearest_select_alpha);
@@ -134,9 +124,8 @@ cbar.Position(1) = sum(last_ax_pos([1,3])) + 0.01;
 xlabel(cbar,'% input complete')
 set(cbar, cbar_props{:});
 
-fig_name = fullfile(fig_path, 'Fig5b');
-export_fig(fig_name,  '-pdf', '-p0.02');
-pause(0.5); close;
+fig_name = fullfile(fig_path, 'roc-curves.pdf');
+exportgraphics(gcf, fig_name);
 
 %% Plot auc roc 
 chance_alphaW = 1/3; 
@@ -212,6 +201,5 @@ cbar.Position(1) = sum(last_ax_pos([1,3])) + 0.01;
 xlabel(cbar,'% input complete')
 set(cbar, cbar_props{:});
 
-fig_name = fullfile(fig_path, 'FigS3');
-export_fig(fig_name,  '-pdf', '-p0.02');
-pause(0.5); close;
+fig_name = fullfile(fig_path, 'roc-auc.pdf');
+exportgraphics(gcf, fig_name);

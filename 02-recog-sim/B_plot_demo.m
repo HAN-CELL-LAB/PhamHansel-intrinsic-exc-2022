@@ -1,6 +1,7 @@
+clc; clear; close all; 
 run start_up; 
 
-fig_path = fullfile('figures/discrim-vs-recog');
+fig_path = fullfile('figures/demo');
 if ~exist(fig_path, 'dir')
     mkdir(fig_path);
 end
@@ -33,7 +34,9 @@ annotation('textarrow',[0.535, 0.7],[0.5, 0.5], ...
 set(gca, 'xcolor', 'none', 'ycolor', 'none'); 
 title('activation', 'fontsize', 100); 
 
-export_fig('figures/demo_ip_heaviside', '-r200', '-p0.02');
+exportgraphics(gcf, fullfile(fig_path, 'demo_ip_heaviside.pdf'));
+
+pause(1); close; 
 
 %% Default options 
 N_Y = 3;
@@ -87,7 +90,7 @@ phrase_list = {...
 
 all_label_list = {word_list, phrase_list}; 
 
-figure; 
+figure('position', [0,0,1,1]);
 
 arrayfun(@(ind) ...
 annotation('textbox', ...
@@ -98,15 +101,15 @@ annotation('textbox', ...
     'LineStyle', 'none', 'FitBoxToText', 'on'), 1:length(all_label_list)); 
 
 
-fig_name = fullfile(fig_path, 'DEMO-words');
-export_fig(fig_name,  '-r300', '-p0.02');
-pause(0.5); close;
+fig_name = fullfile(fig_path, 'demo-words.pdf');
+exportgraphics(gcf, fig_name);
+pause(1); close;
 
 %% Demonstrate ALPHA_W and N_OVERLAP
 alpha_W_vec = [0.2, 0.4, 0.6, 0.8]; 
 num_overlap_per_group_vec = [0, 20];
 
-figure('Units', 'normalized', 'Position', [0.05,0.05,0.23,0.9]);
+figure('Units', 'normalized', 'Position', [0.05,0.05,0.28,0.9]);
 colormap('gray'); 
 cnt_splt = 1; 
 for i = 1:length(num_overlap_per_group_vec)
@@ -123,9 +126,9 @@ for i = 1:length(num_overlap_per_group_vec)
         pbaspect([0.15,1,1]);
         
         ax_pos = get(gca, 'Position');
-        ax_pos = ax_pos + [0,0.05,0,0] * (i ~= 1);
+        ax_pos = ax_pos + [-0.01,0.05,0,0] * (i ~= 1);
         set(gca, 'position', ax_pos, 'box', 'on', 'linewidth', 2, 'xtick', '', 'ytick', '');
-        
+        caxis([0,0.02]);
         if j == 1
             ylabel([sprintf('\\# overlap = %d', opts_tmp.num_overlap_per_group) newline], 'FontSize', 18);
         end
@@ -140,25 +143,22 @@ for i = 1:length(num_overlap_per_group_vec)
 end
 
 last_ax_pos = get(gca, 'position'); 
-cbar = colorbar; 
-cbar.Position(1) = last_ax_pos(1) + last_ax_pos(3) + 0.03;
+cbar = colorbar('fontsize', 12, 'ticks', [0, 0.01, 0.02]);
+cbar.Position(1) = last_ax_pos(1) + last_ax_pos(3) + 0.01;
 cbar.Position(2) = last_ax_pos(2);
-cbar.Position = cbar.Position .* [1,1,3,0.5];
-set(cbar, 'ticks', '', 'box', 'on');
+cbar.Position = cbar.Position .* [1,1,2.5,0.5];
 subplot(length(num_overlap_per_group_vec), length(alpha_W_vec), 2); 
 xlabel(sprintf('\\textbf{to} (%d Y)', N_Y), 'fontsize', 20);
 ylabel(sprintf('\\textbf{from} (%d X)', N_X), 'fontsize', 20);
-% title('$\mathbf{W_{YX}}$',  'fontsize', 35);
 
 annotation('textbox', 'String', '$\mathbf{W_{YX}}$', 'fontsize', 35, ...
     'Units', 'normalized', 'Position', [0,0.94,1,0.05], ...
     'VerticalAlignment', 'middle', 'HorizontalAlignment', 'center', ...
     'LineStyle', 'none', 'Interpreter', 'latex')
 
-
-% fig_name = fullfile(fig_path, 'DEMO-WXY_alphaW-noverlap');
-% export_fig(fig_name,  '-r300', '-p0.02');
-% pause(0.5); close;
+fig_name = fullfile(fig_path, 'demo-WXY_alphaW-noverlap.pdf');
+exportgraphics(gcf, fig_name);
+pause(1); close;
 
 %% Demonstrate %COMPLETE
 percent_complete_input_vec = [0.3,0.8,1]; 
@@ -167,7 +167,7 @@ output_colors = [200,40,40;40,160,40;40,40,200]/255;
 normal_color = [0.7,0.7,0.7];
 
 heading_label = '\color[rgb]{0,0,0} \rightarrow  '; 
-spacing_label = '    '; 
+spacing_label = '  '; 
 
 
 nskip_splt_within_group = 1;
@@ -177,10 +177,8 @@ ncols = (sum(percent_complete_input_vec ~= 1) * def_opts.num_inputs + 1)* (N_Y +
     nskip_splt_between_group * length(percent_complete_input_vec); 
 ttl_splt_order = [2,2,2]; 
 
-init_discrim_label = repmat({'0'}, [1,N_Y]);
 init_recog_label   = repmat({'-'}, [1,N_Y]);
-        
-
+       
 figure('Units', 'normalized', 'Position', [0.05,0.05,0.6,0.8]);
 colormap('gray');
 
@@ -216,13 +214,11 @@ for i = 1:length(percent_complete_input_vec)
         ax_pos(3) = ax_pos(3) * 0.8;
         set(gca, 'position', ax_pos, 'ycolor', 'k', 'ytick', '');
         
-        discrim_label = init_discrim_label;
         recog_label   = init_recog_label;
         
         highlighted_label = sprintf('\\color[rgb]{%f,%f,%f}1%s',...
             output_colors(output_labels(j),:), normal_color_str);
         
-        discrim_label{output_labels(j)} = highlighted_label;
         recog_label{output_labels(j)}   = highlighted_label;
         
         if output_labels(j) ~= 1
@@ -232,7 +228,6 @@ for i = 1:length(percent_complete_input_vec)
         label_combined = sprintf('%s%s%s%s%s', ...
             heading_label, ...
             normal_color_str, ...
-            sprintf('%s',discrim_label{:}), ...
             spacing_label, ...
             sprintf('%s',recog_label{:})); 
         ylabel(label_combined, 'FontSize', 30,  'Interpreter', 'tex', ...
@@ -243,11 +238,6 @@ for i = 1:length(percent_complete_input_vec)
     
 end
 
-
-save_keypress = 'S'; 
-while ~strcmpi(get(gcf, 'CurrentCharacter'), save_keypress)
-    waitforbuttonpress;
-end
-fig_name = fullfile(fig_path, 'DEMO-INPOUT_percentcomplete');
-export_fig(fig_name,  '-r300', '-p0.02');
-pause(0.5); close;
+fig_name = fullfile(fig_path, 'demo-inpout_percentcomplete.pdf');
+exportgraphics(gcf, fig_name);
+pause(1); close;

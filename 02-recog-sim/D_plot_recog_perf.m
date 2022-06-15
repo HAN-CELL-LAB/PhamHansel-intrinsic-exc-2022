@@ -1,6 +1,8 @@
+clc; clear; close all; 
 run start_up.m;
+
 %% Load data
-load('data/discrim_vs_recog_data.mat', ...
+load('data/recog_data.mat', ...
     'results_all', 'results_dim_description', ...
     'def_opts', 'param_opts');
 
@@ -9,15 +11,7 @@ if ~exist(fig_path, 'dir')
     mkdir(fig_path);
 end
 
-%% Adding L2 norm of recognition rates
-results_all.recognition_L2_truerates = sqrt(results_all.recognition_TPR.^2 + results_all.recognition_TNR.^2);
-results_all.recognition_L2_falserates = sqrt(results_all.recognition_FPR.^2 + results_all.recognition_FNR.^2);
-
-results_all.recognition_L1_truerates = (results_all.recognition_TPR + results_all.recognition_TNR);
-results_all.recognition_L1_falserates = (results_all.recognition_FPR + results_all.recognition_FNR);
-
-tradeoff_lambda = 1; 
-results_all.recognition_postradeoffs = results_all.recognition_TPR - tradeoff_lambda * results_all.recognition_FPR; 
+results_all.recognition_postradeoffs = results_all.recognition_TPR - results_all.recognition_FPR; 
 
 %% Vectors of parameters
 dthres_vec = linspace(def_opts.rng_dthres(1), def_opts.rng_dthres(2), def_opts.num_dthres);
@@ -25,29 +19,22 @@ alpha_W_vec = param_opts.alpha_W;
 percent_complete_input_vec = param_opts.percent_complete_input;
 num_overlap_per_group_vec = param_opts.num_overlap_per_group;
 
-plot_fields = fieldnames(results_all);
-
 %% Plot lines
 common_norm_dthres_range = [-0.5, 0.5]; 
 
-plot_fieldpairs = {'recognition_FPR', 'recognition_TPR', 'recognition_postradeoffs'};
+plot_fieldpairs = {'recognition_postradeoffs', 'recognition_TPR'};
 title_name = struct; 
-title_name.recognition_FPR = 'recog. FPR';
-title_name.discrimination_accuracy = 'discrim. acc';
-title_name.recognition_TPR = 'recog. TPR';
-title_name.recognition_postradeoffs = 'TPR - FPR';
+title_name.recognition_TPR = 'recognition TPR';
+title_name.recognition_postradeoffs = 'recognition TPR - FPR';
 
 cbar_name = struct; 
-cbar_name.discrimination_accuracy = 'discrim acc';
-cbar_name.recognition_FPR = 'recog. FPR';
 cbar_name.recognition_TPR = 'recog. TPR';
-cbar_name.recognition_postradeoffs = 'TPR - FPR';
+cbar_name.recognition_postradeoffs = 'recog. TPR - FPR';
 
-linestyles = {'-', '-', '-'}; 
+linestyles = {'-', '-'}; 
 
 cmap_pairs = {return_colorbrewer('Reds', length(percent_complete_input_vec)) * 0.9, ...
-    return_colorbrewer('Blues', length(percent_complete_input_vec)) * 0.9, ...
-    return_colorbrewer('Greens', length(percent_complete_input_vec)) * 0.95};
+    return_colorbrewer('Blues', length(percent_complete_input_vec)) * 0.9};
 
 nearest_select_alpha = [0.25, 0.50, 0.6, 0.75, 1];
 nearest_select_novrl = [0, 20];
@@ -68,10 +55,9 @@ figure('units', 'normalized', ...
     'DefaultAxesFontSize', 18);
 cnt_splt = 1;
 
-fig_description = sprintf('\\color[rgb]{%f, %f, %f}%s\\color{black} vs \\color[rgb]{%f, %f, %f}%s vs (\\color[rgb]{%f, %f, %f}%s)', ...
+fig_description = sprintf('\\color[rgb]{%f, %f, %f}%s\\color{black} vs \\color[rgb]{%f, %f, %f}%s', ...
     cmap_pairs{1}(end,:), title_name.(plot_fieldpairs{1}), ...
-    cmap_pairs{2}(end,:), title_name.(plot_fieldpairs{2}), ...
-    cmap_pairs{3}(end,:), title_name.(plot_fieldpairs{3}));
+    cmap_pairs{2}(end,:), title_name.(plot_fieldpairs{2}));
 
 annotation('textbox', 'String', fig_description, ...
     'FontSize', 25, 'Interpreter', 'tex', 'LineStyle', 'none', ...
@@ -83,7 +69,7 @@ for j = 1:length(select_novrl_ind)
         
         ax = subplot(fig_nrows,fig_ncols,cnt_splt); hold on;
         
-        plot([0,0],[0,1], ':', 'linewidth', 2, 'color', 0.6*ones(1,3));
+        plot([0,0],[-1,1], ':', 'linewidth', 2, 'color', 0.6*ones(1,3));
        
         for k = 1:length(percent_complete_input_vec)
             
@@ -113,8 +99,10 @@ end
 last_ax_pos = get(gca, 'Position');
 
 linkaxes(findobj(gcf, 'type', 'axes'), 'xy');
+
+% shift to make place for for colorbars
 for ax = findobj(gcf, 'type', 'axes')'
-    ax.Position(1) = ax.Position(1) - 0.05;
+    ax.Position(1) = ax.Position(1) - 0.05; 
 end
 
 despline('all');
@@ -122,6 +110,7 @@ despline('all');
 xlim(common_norm_dthres_range);
 ylim([-0.6,1]);
 
+% colorbars 
 select_cbartickpos = [1,4,7,10];
 
 cbar_tickval = percent_complete_input_vec;
@@ -134,10 +123,8 @@ cbar_props = {...
     'ticks', cbar_tickpos(select_cbartickpos), ...
     'ticklabels', cbar_tickval(select_cbartickpos)};
 
-
 pseudo_ax_1 = axes('Position', last_ax_pos, 'Visible', 'off');
-pseudo_ax_2 = axes('Position', last_ax_pos + [0,0.1,0,0], 'Visible', 'off');
-pseudo_ax_3 = axes('Position', last_ax_pos + [0,0.25,0,0], 'Visible', 'off');
+pseudo_ax_2 = axes('Position', last_ax_pos + [0,0.15,0,0], 'Visible', 'off');
 
 colormap(pseudo_ax_1, cmap_pairs{1});
 cbar_1 = colorbar(pseudo_ax_1, 'north');
@@ -151,33 +138,21 @@ colormap(pseudo_ax_2, cmap_pairs{2});
 cbar_2 = colorbar(pseudo_ax_2, 'north');
 cbar_2.Position([1,3,4]) = cbar_1.Position([1,3,4]);
 title(cbar_2,sprintf('\\color[rgb]{%f, %f, %f} %s ', cmap_pairs{2}(end,:), cbar_name.(plot_fieldpairs{2})));
-% xlabel(cbar_2,'% input complete')
+xlabel(cbar_2,'% input complete')
 set(cbar_2,  cbar_props{:});
 
-colormap(pseudo_ax_3, cmap_pairs{3});
-cbar_3 = colorbar(pseudo_ax_3, 'north');
-cbar_3.Position([1,3,4]) = cbar_1.Position([1,3,4]);
-title(cbar_3,sprintf('\\color[rgb]{%f, %f, %f} %s ', cmap_pairs{3}(end,:), cbar_name.(plot_fieldpairs{3})));
-% xlabel(cbar_3,'% input complete')
-set(cbar_3,  cbar_props{:});
+fig_name = fullfile(fig_path, 'recog-perf.pdf');
+exportgraphics(gcf, fig_name); 
 
-fig_name = fullfile(fig_path, 'Fig5a');
-export_fig(fig_name,  '-pdf', '-p0.02');
-pause(0.5); close;
-
-%% Plot delta_theta_optim, TRP, TPR-FPR, discacc
+%% Plot delta_theta_optim, TRP, TPR-FPR
 title_name = struct; 
 title_name.recognition_accuracy = 'recognition TPR';
 title_name.recognition_postradeoffs = 'recognition TPR - FPR';
-title_name.discrimination_accuracy = 'discrimination accuracy';
 
 flip_dtheta = true; 
 diff_from_optim_acc = 0.001;
-plot_fieldpairs = {'recognition_accuracy', 'recognition_postradeoffs', 'discrimination_accuracy'};
-
-plot_resultlist = {results_all.(plot_fieldpairs{1}), ...
-    results_all.(plot_fieldpairs{2}),  ...
-    results_all.(plot_fieldpairs{3})};
+plot_fieldpairs = {'recognition_accuracy', 'recognition_postradeoffs'};
+plot_resultlist = {results_all.(plot_fieldpairs{1}), results_all.(plot_fieldpairs{2})};
 
 nearest_select_alpha = 0.3:0.1:1;
 nearest_select_novrl = [0,20];
@@ -190,7 +165,7 @@ select_novrl_ind = arrayfun(@(x) find_nearest(num_overlap_per_group_vec, x, 'ind
 select_alpha_vec = alpha_W_vec(select_alpha_ind);
 select_novrl_vec = num_overlap_per_group_vec(select_novrl_ind);
 
-figure('units', 'normalized', 'Position', [0.05,0.05,1,0.9], 'defaultaxesfontsize', 20);
+figure('units', 'normalized', 'Position', [0.05,0.05,0.7,0.9], 'defaultaxesfontsize', 20);
 
 cnt_splt = 1;
 for i = 1:length(select_novrl_ind)
@@ -245,7 +220,7 @@ xlim([0,1]);
 
 despline('all',[0.5,0.3]);
     
-subplot(length(select_novrl_ind),length(plot_fieldpairs),6);
+subplot(length(select_novrl_ind),length(plot_fieldpairs),4);
 ax_pos = get(gca, 'Position');
 cbar = colorbar(gca);
 
@@ -256,7 +231,7 @@ cbar_tickpos = linspace(0.5/cbar_numtick,1-0.5/cbar_numtick,cbar_numtick);
 cbar_props = {...
     'linewidth', 1.5, ...
     'ticklength', 0.015, ...
-    'fontsize', 28, ...
+    'fontsize', 25, ...
     'ticks', cbar_tickpos(select_cbartickpos), ...
     'ticklabels', cbar_tickval(select_cbartickpos)};
 
@@ -266,6 +241,6 @@ cbar.Position = cbar.Position .* [1,1,1.25,0.65] + [0.06,0.04,0,0];
 title(cbar, '$\alpha_W$', 'interpreter', 'latex', 'fontsize', 35);
 set(cbar, cbar_props{:});
 
-fig_name = fullfile(fig_path, 'Fig6a');
-export_fig(fig_name,  '-pdf', '-p0.02');
-pause(0.5); close;
+pause(1); 
+fig_name = fullfile(fig_path, 'optim-dtheta.pdf');
+exportgraphics(gcf, fig_name); 
