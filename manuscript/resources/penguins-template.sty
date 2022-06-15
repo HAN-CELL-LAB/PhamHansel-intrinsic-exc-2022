@@ -131,8 +131,12 @@
 % Highlight changes
 \usepackage[dvipsnames]{xcolor}
 \usepackage{soul}
-\newcommand{\NEWCHANGE}[1]{\ul{\textit{#1}}}
-\newcommand{\NEWCITE}[1]{\textit{#1}}
+% \newcommand{\NEWCHANGE}[1]{\ul{\textit{#1}}}
+% \newcommand{\NEWCITE}[1]{\textit{#1}}
+
+\newcommand{\NEWCHANGE}[1]{#1}
+\newcommand{\NEWCITE}[1]{#1}
+
 \newcommand{\NEWCHANGEUNSURE}[1]{{\color{BrickRed} \ul{\textit{#1}}}}
 \newcommand{\TOREMOVE}[1]{{\color{violet} \st{#1}}}
 
