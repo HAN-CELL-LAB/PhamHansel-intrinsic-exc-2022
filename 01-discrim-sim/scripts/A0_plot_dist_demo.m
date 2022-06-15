@@ -1,17 +1,8 @@
 clc; clear; close all; 
+run startup.m
 
-addpath(genpath('extpkg'));
-addpath(genpath('functions'));
-graphic_setdefault(15, ...
-    'DefaultAxesMinorGridAlpha', 0.05, ...
-    'DefaultAxesMinorGridLineStyle', '-', ...
-    'DefaultTextInterpreter', 'latex', ...
-    'DefaultLegendInterpreter', 'latex', ...
-    'DefaultStemMarkerSize', 1, ...
-    'DefaultStemlineWidth', 1.5, ...
-    'DefaultFigureWindowStyle','normal');
+%% Plot Jaccard and Hamming distance demonstration 
 
-%%
 Jd = [2/8,3/8,4/7,5/7,4/5];
 Hd = [2/8,3/8,4/8,5/8,4/8];
 
@@ -29,4 +20,4 @@ view(90,90);
 
 set(gca,'xcolor','none','ycolor','none');
 
-exportgraphics(gcf, 'misc/demo.pdf', 'ContentType', 'vector')
+exportgraphics(gcf, 'figures/demo-dist.pdf');

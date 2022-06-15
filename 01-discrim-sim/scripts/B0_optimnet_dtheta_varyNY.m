@@ -1,121 +1,116 @@
-clc; clear; close all; 
+clc; clear; close all;
+run startup.m
 
-addpath(genpath('extpkg'));
-addpath(genpath('functions'));
-graphic_setdefault(15, ...
-    'DefaultAxesMinorGridAlpha', 0.05, ...
-    'DefaultAxesMinorGridLineStyle', '-', ...
-    'DefaultTextInterpreter', 'latex', ...
-    'DefaultLegendInterpreter', 'latex', ...
-    'DefaultStemMarkerSize', 1, ...
-    'DefaultStemlineWidth', 1.5, ...
-    'DefaultFigureWindowStyle','normal');
-
+%% Define paths
+data_path = 'data/vary10XNY';
+fig_path = 'figures'; 
 %% Testing 1 exampple
 
+N_X = 10; 
+N_Y = 6; 
+dtheta_vec = linspace(-1, 1, 100);
+n_iter = 3000; %5000;
+eta_grad = 1e0; 
+epsi_deltafun = 1e-2; 
+
+results = run_1_optim_and_applydtheta(N_X, N_Y, dtheta_vec, n_iter, eta_grad, epsi_deltafun);
+
+plot_one_example(results);
+
+%% Define parameters for multiple simulations
+
+% for testing par sim with smaller set
 % N_X = 10; 
-% N_Y = 6; 
-% dtheta_vec = linspace(-1, 1, 100);
-% n_iter = 3000; %5000;
-% eta_grad = 1e0; 
-% epsi_deltafun = 1e-2; 
-% 
-% results = run_1_optim_and_applydtheta(N_X, N_Y, dtheta_vec, n_iter, eta_grad, epsi_deltafun);
-% 
-% plot_one_example(results);
+% N_Y_vec = [2,5,9,10]; 
+% n_sim = 20;
+
+N_X = 10; 
+N_Y_vec = 2:20; 
+n_sim = 500; 
+
+dtheta_vec = linspace(-1, 1, 200);
+n_iter = 5000;
+eta_grad = 1e0; 
+epsi_deltafun = 1e-2; 
+
+num_N_Y = length(N_Y_vec);
 
 %% Running multiple 
 
-% if isempty(gcp('nocreate'))
-%     parpool('local', 6);
-% end
-% 
-% % for testing par sim
-% % N_X = 10; 
-% % N_Y_vec = [2,5,9,10]; 
-% % n_sim = 20;
-% 
-% N_X = 10; 
-% N_Y_vec = 2:20; 
-% n_sim = 500; 
-% 
-% dtheta_vec = linspace(-1, 1, 200);
-% n_iter = 5000;
-% eta_grad = 1e0; 
-% epsi_deltafun = 1e-2; 
-% 
-% num_N_Y = length(N_Y_vec);
-% results = cell(num_N_Y, 1); 
-% 
-% t0 = tic;
-% for i = 1:num_N_Y
-%     ti = tic; 
-%     N_Y = N_Y_vec(i); 
-%     fprintf('- Running simulations with N_Y=%d ... \t', N_Y);
-%     saved_filename = fullfile('data', sprintf('sim-NY=%d.mat', N_Y));
-%     results{i} = run_parmulti_optim_and_applydtheta(saved_filename, n_sim, ...
-%         N_X, N_Y, dtheta_vec, n_iter, eta_grad, epsi_deltafun);
-%     
-%     fprintf('took %.2f minutes.\n', toc(ti)/60);
-% end
-% 
-% fprintf('--> Total took %.2f minutes.\n', toc(t0)/60);
-% 
-%%
-% results_aggr = struct(...
-%     'init', {cellfun(@(x) x.init, results,'uni',0)}, ...
-%     'best', {cellfun(@(x) x.best, results,'uni',0)} ...
-%     );
-% 
-% prog_fields = fieldnames(results_aggr);
-% prog_linestyles = struct('init', '-', 'best', '-');
-%         
-% z_sem = 2; 
-% fill_alpha = 0.2;
-% cmap = jet(num_N_Y)*0.9; 
-% 
-% figure; 
-% for i = 1:length(prog_fields)
-%     prog_field = prog_fields{i};
-%     pltsty = {'linestyle', prog_linestyles.(prog_field)};
-% %     lgnd_suff = sprintf(' (%s)', prog_field);
-%     lgdn_opts = {true, '', {'NumColumns', 2, 'Location', 'northeast', 'FontSize', 12}};
-%     
-%     subplot(2,2,i); hold on;
-%     ttl = sprintf('Entropy of output patterns (%s)', prog_field);
-%     plot_single_result_panel(N_Y_vec, dtheta_vec, results_aggr.(prog_field), 'entropy', ...
-%         z_sem, cmap, fill_alpha, pltsty, ttl, 'entropy (bits)', false);
-%     set(gca, 'tag', 'entropy');
-%     
-%     subplot(2,2,i+2); hold on;
-%     lgdn_opts_on = {{false}, lgdn_opts};
-%     ttl = sprintf('Number of unique output patterns (%s)', prog_field);
-%     plot_single_result_panel(N_Y_vec, dtheta_vec, results_aggr.(prog_field), 'num_unq', ...
-%         z_sem, cmap, fill_alpha, pltsty, ttl, '\# patterns', lgdn_opts_on{(i==1) +1}{:})
-%     set(gca, 'tag', 'num_unq');
-% end
-% 
-% despline('all');
-% 
-% linkaxes(findall(gcf,'type','axes'),'x');
-% cellfun(@(x) linkaxes(findall(gcf, 'type', 'axes', 'tag', x), 'y'), {'entropy', 'num_unq'})
-% 
-% pause(1);
-% exportgraphics(gcf, fullfile('figures', 'anly-results.pdf'), 'ContentType', 'vector')
+if isempty(gcp('nocreate'))
+    parpool('local', 6);
+end
+
+results = cell(num_N_Y, 1); 
+
+t0 = tic;
+for i = 1:num_N_Y
+    ti = tic; 
+    N_Y = N_Y_vec(i); 
+    fprintf('- Running simulations with N_Y=%d ... \t', N_Y);
+    saved_filename = fullfile(data_path, sprintf('sim-NY=%d.mat', N_Y));
+    results{i} = run_parmulti_optim_and_applydtheta(saved_filename, n_sim, ...
+        N_X, N_Y, dtheta_vec, n_iter, eta_grad, epsi_deltafun);
+    
+    fprintf('took %.2f minutes.\n', toc(ti)/60);
+end
+
+fprintf('--> Total took %.2f minutes.\n', toc(t0)/60);
 
 %% Plot an example from saved simulations
-data_path = 'data'; 
 N_Y_sel = 5;
 select_results = load(fullfile(data_path, sprintf('sim-NY=%d.mat', N_Y_sel)), 'simulations').simulations;
-num_sim = length(select_results); 
-example_results = select_results{randi(num_sim)};
+example_results = select_results{30};
 plot_one_example(example_results);
 
-% exportgraphics(gcf, fullfile('figures', 'example-sim01.pdf'), 'ContentType', 'vector')
-%% Load data to analyze further
-data_path = 'data'; 
-data_files = arrayfun(@(x) fullfile(x.folder, x.name), dir(fullfile(data_path, '*.mat')), 'uni', 0); 
+exportgraphics(gcf, fullfile('figures', 'demo-optim.pdf'), 'ContentType', 'vector');
 
+%% Load and plot entropies, num_unqs
+data_files = arrayfun(@(x) fullfile(x.folder, x.name), dir(fullfile(data_path, '*.mat')), 'uni', 0); 
+[~, sorted_by] = sort(cellfun(@(x) load(x).configurations.N_Y, data_files)); % sort by N_Y 
+results = cellfun(@(x) load(x).analyses, data_files(sorted_by), 'uni', 0); 
+
+results_agg = struct(...
+    'init', {cellfun(@(x) x.init, results,'uni',0)}, ...
+    'best', {cellfun(@(x) x.best, results,'uni',0)} ...
+    );
+
+prog_fields = fieldnames(results_agg);
+prog_linestyles = struct('init', '-', 'best', '-');
+        
+z_sem = 2; 
+fill_alpha = 0.2;
+cmap = jet(num_N_Y)*0.9; 
+
+figure; 
+for i = 1:length(prog_fields)
+    prog_field = prog_fields{i};
+    pltsty = {'linestyle', prog_linestyles.(prog_field)};
+    lgdn_opts = {true, '', {'NumColumns', 2, 'Location', 'northeast', 'FontSize', 12}};
+    
+    subplot(2,2,i); hold on;
+    ttl = sprintf('Entropy of output patterns (%s)', prog_field);
+    plot_single_result_panel(N_Y_vec, dtheta_vec, results_agg.(prog_field), 'entropy', ...
+        z_sem, cmap, fill_alpha, pltsty, ttl, 'entropy (bits)', false);
+    set(gca, 'tag', 'entropy');
+    
+    subplot(2,2,i+2); hold on;
+    lgdn_opts_on = {{false}, lgdn_opts};
+    ttl = sprintf('Number of unique output patterns (%s)', prog_field);
+    plot_single_result_panel(N_Y_vec, dtheta_vec, results_agg.(prog_field), 'num_unq', ...
+        z_sem, cmap, fill_alpha, pltsty, ttl, '\# patterns', lgdn_opts_on{(i==1) +1}{:})
+    set(gca, 'tag', 'num_unq');
+end
+
+despline('all');
+
+linkaxes(findall(gcf,'type','axes'),'x');
+cellfun(@(x) linkaxes(findall(gcf, 'type', 'axes', 'tag', x), 'y'), {'entropy', 'num_unq'})
+
+pause(1);
+exportgraphics(gcf, fullfile(fig_path, 'discrim-ent-unq-10X-varyNY.pdf'))
+
+%% Load data to analyze further
 num_N_Y = length(data_files);
 
 N_Y_vec = zeros(num_N_Y,1);
@@ -250,14 +245,11 @@ caxis([min(range_NY_plt), max(range_NY_plt)]);
 set(cbar, 'ticks', range_NY_plt);
 
 despline('all');
-
 pause(1);
 
-% savefig(gcf, fullfile('figures', 'pairs-results.fig')); 
+exportgraphics(gcf, fullfile(fig_path, 'discrim-pairs-anly-10X-varyNY.pdf'))
 
-exportgraphics(gcf, fullfile('figures', 'pairs-results-all.pdf'), 'ContentType', 'image')
-
-%%
+%% Helper plot functions
 function scatter_with_colorgrads(X_mat, Y_mat, cmap, markersize, markeralpha)
     if ~exist('markersize', 'var'), markersize = 50; end 
     if ~exist('markeralpha', 'var'), markeralpha = 0.1; end

@@ -1,6 +1,6 @@
 clc; clear; close all; 
 
-addpath(genpath('extpkg'));
+addpath(genpath('matlab-ext'));
 addpath(genpath('functions'));
 
 num_workers = 40;
@@ -16,12 +16,7 @@ disp(parcluster_obj);
 fprintf('%s\n', section_sep);
 
 %% Paths
-data_path = 'data/varyNXY-sim01'; 
-fig_path = 'figures/varyNXY-sim01';
-
-if ~exist(fig_path, 'dir')
-    mkdir(fig_path);
-end
+data_path = 'data/varyNXY-nsg'; 
 
 %% Combinations
 params_to_vary = {...
@@ -86,6 +81,5 @@ for i_comb = 1:n_comb
 end
 
 fprintf('--> Total took %.2f minutes.\n', toc(t0)/60);
-
 
 fprintf('\n=============== FINISH SIMULATION ===============\n');
