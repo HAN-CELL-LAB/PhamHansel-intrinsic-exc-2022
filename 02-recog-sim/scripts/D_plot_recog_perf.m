@@ -6,7 +6,7 @@ load('data/recog_data.mat', ...
     'results_all', 'results_dim_description', ...
     'def_opts', 'param_opts');
 
-fig_path = fullfile('figures/official');
+fig_path = fullfile('figures/main-recog');
 if ~exist(fig_path, 'dir')
     mkdir(fig_path);
 end

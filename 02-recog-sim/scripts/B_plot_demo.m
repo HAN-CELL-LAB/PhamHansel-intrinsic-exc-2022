@@ -11,7 +11,7 @@ ip_color = [0.7,0.7,0.7,0.5];
 
 x = -10:0.01:10; 
 g = 1000; 
-figure; hold on; 
+figure('position', [0,0,1,1]); hold on; 
 plot(x, 1./(1+exp(-g*x)), '-k', 'linewidth', 10);
 plot(x, 1./(1+exp(-g*(x - 5))), '-', 'color', ip_color,  'linewidth', 10);
 plot(x, 1./(1+exp(-g*(x + 5))), '-', 'color', ip_color, 'linewidth', 10);
@@ -34,7 +34,7 @@ annotation('textarrow',[0.535, 0.7],[0.5, 0.5], ...
 set(gca, 'xcolor', 'none', 'ycolor', 'none'); 
 title('activation', 'fontsize', 100); 
 
-exportgraphics(gcf, fullfile(fig_path, 'demo_ip_heaviside.pdf'));
+exportgraphics(gcf, fullfile(fig_path, 'ip_heaviside.pdf'));
 
 pause(1); close; 
 
@@ -101,7 +101,7 @@ annotation('textbox', ...
     'LineStyle', 'none', 'FitBoxToText', 'on'), 1:length(all_label_list)); 
 
 
-fig_name = fullfile(fig_path, 'demo-words.pdf');
+fig_name = fullfile(fig_path, 'words.pdf');
 exportgraphics(gcf, fig_name);
 pause(1); close;
 
@@ -156,7 +156,7 @@ annotation('textbox', 'String', '$\mathbf{W_{YX}}$', 'fontsize', 35, ...
     'VerticalAlignment', 'middle', 'HorizontalAlignment', 'center', ...
     'LineStyle', 'none', 'Interpreter', 'latex')
 
-fig_name = fullfile(fig_path, 'demo-WXY_alphaW-noverlap.pdf');
+fig_name = fullfile(fig_path, 'WXY_alphaW-noverlap.pdf');
 exportgraphics(gcf, fig_name);
 pause(1); close;
 
@@ -238,6 +238,6 @@ for i = 1:length(percent_complete_input_vec)
     
 end
 
-fig_name = fullfile(fig_path, 'demo-inpout_percentcomplete.pdf');
+fig_name = fullfile(fig_path, 'inpout_percentcomplete.pdf');
 exportgraphics(gcf, fig_name);
 pause(1); close;
