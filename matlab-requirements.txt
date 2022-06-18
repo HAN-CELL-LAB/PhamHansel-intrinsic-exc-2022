@@ -1,5 +1,5 @@
-https://github.com/tuanpham96/penguin-matlab-utils
-https://github.com/altmany/export_fig
-https://github.com/DylanMuir/ParforProgMon
-https://github.com/raacampbell/shadedErrorBar
-https://github.com/bastibe/Violinplot-Matlab
+https://github.com/tuanpham96/penguin-matlab-utils	12573fd95900a148edb91313af5acd7ecb284436
+https://github.com/altmany/export_fig	b78c71d2530dae17ef347541d4ea307b7077ea96	
+https://github.com/DylanMuir/ParforProgMon	b01bf5dbcfd34095392849211c0287ad4805bfbf
+https://github.com/raacampbell/shadedErrorBar	263537a07071b4a89816dcf779ea3337122913ae
+https://github.com/bastibe/Violinplot-Matlab	1a62a2b286fc144e546562f7cdb71f259c8dd903
