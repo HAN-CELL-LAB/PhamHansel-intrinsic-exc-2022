@@ -19,7 +19,10 @@ end
 
 ip_s1_data = load(fullfile(PROCESS_path, 'ip-select-data-analysis.mat'));
 extra_s1_data = load(extra_data_path);
-li_v1_data = load(v1_data_path);
+
+if check_if_has_v1(v1_data_path)
+    li_v1_data = load(v1_data_path);
+end
 
 %% Define files
 data_path = fullfile(STATS_path, 'ip-s1-data'); 
@@ -40,9 +43,17 @@ writetable(s1_tbl, [data_path '.csv']);
 writetable(s1_tbl, [data_path '.xlsx']);
 
 %% Write table of V1
-v1_tbl = struct2table(structfun(@(x) x.data, li_v1_data.data, 'uni', 0));
-writetable(v1_tbl, fullfile(STATS_path, 'v1-data.csv'));
-writetable(v1_tbl, fullfile(STATS_path, 'v1-data.xlsx'));
+if check_if_has_v1(v1_data_path)
+    v1_tbl = struct2table(structfun(@(x) x.data, li_v1_data.data, 'uni', 0));
+    writetable(v1_tbl, fullfile(STATS_path, 'v1-data.csv'));
+    writetable(v1_tbl, fullfile(STATS_path, 'v1-data.xlsx'));
+else
+    pseudo_v1 = struct(...
+        'Vrest', nan(10,1), ...
+        'Vthres', nan(10,1), ...
+        'dV', nan(10,1));
+    v1_tbl = struct2table(pseudo_v1); 
+end
 
 %% Correlation test between response variables
 g_name = 'ExpGroup';
@@ -194,6 +205,9 @@ writetable(cell2table_withnames(T_anovan), output_common_args{:}, ...
     'Range', sprintf('A%d', curr_row + num_sep));
 
 %% Write summary stats and comparing pre/post or between S1/V1 to a latex table
+if ~check_if_has_v1(v1_data_path)
+    warning('For V1 summary stats and tests with S1, will use a pseudo data table in order to finish the table construction');
+end
 
 data_source_mapping = struct;
 data_source_mapping.V_R = struct('V1', 'Vrest', 'S1', 'Vrest_1');
@@ -359,7 +373,6 @@ function r = tex_pval(p, alpha)
         p_txt = sprintf('%.4f', p);
     end
 
-    signif_level = '';
     star_levels = [0.05, 0.01, 1e-3]; 
     signif_level = repmat('*', [sum(p < star_levels), 1]);
 
@@ -423,4 +436,11 @@ end
 
 function v = get_base_and_post(T,f)
     v = [get_base(T,f);get_post(T,f)];
+end
+
+function has_v1_data = check_if_has_v1(data_path)
+    has_v1_data = exist(data_path, 'file') ~= 0;
+    if ~has_v1_data
+        warning('Does not have "%s" for V1 data, will skill this', data_path);
+    end
 end

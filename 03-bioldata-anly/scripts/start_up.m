@@ -1,15 +1,7 @@
 %% Example start up scripts to call before every script
 
-% Add path
-% addpath(genpath('.')); 
 addpath(genpath('functions'));
-addpath(genpath('extpkg'));
-
-% Remove path
-% rmpath(genpath('./scratch'));
-% rmpath(genpath('./figures'));
-% rmpath(genpath('./docs'));
-% rmpath(genpath('./demo'));
+addpath(genpath('../matlab-ext'));
 
 % Reset default graphic options 
 graphic_setdefault(15, ...

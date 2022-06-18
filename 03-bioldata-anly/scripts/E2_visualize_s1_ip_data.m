@@ -4,7 +4,7 @@ run start_up.m
 %% Define paths
 main_data_path = 'data/ip-data';
 
-fig_path = 'figures/ip-data/sum'; 
+fig_path = 'figures/ip-data'; 
 if ~exist(fig_path, 'dir')
     mkdir(fig_path); 
 end
@@ -162,7 +162,7 @@ for i = 1:ncols
             'displayname', expgroup_lgnd, ...
             'tag', 'showlegend');
     end
-    
+    despline;
     set(gca, 'xtick', [1,2], ...
         'xticklabel', xaxis_names, ...
         'ticklabelinterpreter', 'latex');
@@ -410,214 +410,18 @@ linkaxes(findall(gcf, 'type', 'axes'), 'x');
 exportgraphics(gcf, fullfile(fig_path, 's1-sorteddVchange.pdf'));
 close;
 
-%% Sorted change based on V_T
-[sorted_VTchange, sorted_ind] = sort(pooled_table.Vthres_first_change);
-sorted_dVchange = pooled_table.dVthres_rest_change(sorted_ind);
-
-sorted_nspkchange = pooled_table.num_spikes_change(sorted_ind); 
-sorted_rel_nspkchange = pooled_table.num_spikes_percentchange(sorted_ind); 
-
-sorted_expgroup = pooled_table.ExpGroup(sorted_ind);
-
-pseudo_xvec = 1:select_num_cells;
-
-text_V_ypos = -sign(sorted_VTchange) * 5;
-combined_V_text = arrayfun(@(x,y) sprintf('%.2f mV, \\color[rgb]{0.6,0.6,0.6}%.2f mV', x,y), ...
-    sorted_VTchange, sorted_dVchange, 'uni', 0);
-
-text_nspk_ypos = -sign(sorted_nspkchange) * 5;
-combined_nspk_text = arrayfun(@(x,y) sprintf('%.2f, \\color[rgb]{0.6,0.6,0.6}%.1f %%', x,y), ...
-    sorted_nspkchange, sorted_rel_nspkchange, 'uni', 0);
-
-stem_args = {'linewidth', 7, 'linestyle', '-', 'marker', 'none'};
-
-figure('units','normalized','position',[0,0,1,1]); 
-
-subplot(3,1,[1,2]);
-hold on; 
-
-stem(sorted_VTchange,'k', stem_args{:});
-ylim([-12, 12]);
-ylabel(sprintf('%s (mV)', latex_pooled_struct.Vthres_first_change));
-
-text(pseudo_xvec-0.1, text_V_ypos, combined_V_text, ...
-    'Interpreter','tex', 'HorizontalAlignment', 'center',...
-    'FontSize', 15, 'Rotation', 90)
-
-for i = 1:length(unq_expgroups)
-    exp_group_ith = unq_expgroups{i};
-    loc2plt = strcmp(sorted_expgroup, exp_group_ith);
-    
-    scatter(pseudo_xvec(loc2plt), 12 * ones(1,sum(loc2plt)), ...
-        250, expgroup_colors(i,:), ...
-        'filled', 'MarkerEdgeColor', 'none', ...
-        'displayname', exp_group_ith, 'tag', 'showlegend');
-end
-
-set(gca, 'ytick', -12:6:18);
-
-[lgnd, icons, ~, ~] = legend(findobj(gca, 'tag', 'showlegend'),'fontsize', 19);
-set(lgnd, 'Box', 'on', 'Color', [1,1,1]*0.97, 'Location', 'North');
-lgnd.Position = lgnd.Position + [0.2,-0.05,0,0]; 
-arrayfun(@(x) set(x.Children, 'MarkerSize', 15), findall(icons, 'type', 'hggroup'));
-
-yyaxis right;
-stem(pseudo_xvec + 0.2, sorted_dVchange, 'color', [0.6,0.6,0.6], stem_args{:});
-ylim([-15,15]);
-ylabel(sprintf('%s (mV)', latex_pooled_struct.dVthres_rest_change));
-set(gca, 'ycolor', [0.6,0.6,0.6]);
-
-xlim([0,select_num_cells+1]);
-hide_only_axis('x');
-title(['S1 cells sorted by ' latex_pooled_struct.Vthres_first_change]); 
-
-subplot(3,1,3);
-hold on; 
-
-stem(sorted_nspkchange,'k', stem_args{:});
-ylabel(sprintf('%s', latex_pooled_struct.num_spikes_change));
-text(pseudo_xvec, text_nspk_ypos, combined_nspk_text, ...
-    'Interpreter','tex', 'HorizontalAlignment', 'center',...
-    'FontSize', 15, 'Rotation', 90)
-
-text_ypos_cellids = 10 * ones(1,select_num_cells);
-stem(pseudo_xvec + 0.1, text_ypos_cellids, ':', 'color', [0.3,0.1,0.6,0.5]);
-sorted_cellids = pooled_table.CellID(sorted_ind); 
-text(pseudo_xvec, text_ypos_cellids, sorted_cellids, ...
-    'Interpreter','none', 'FontAngle', 'italic', ...
-    'HorizontalAlignment', 'left', 'VerticalAlignment', 'middle', ...
-    'FontSize', 8, 'Rotation', 60, ...
-    'BackgroundColor', [0.4,0.2,0.7], 'Color', 'w')
-
-ylim([-5, 10]);
-yyaxis right;
-stem(pseudo_xvec + 0.2, sorted_rel_nspkchange, 'color', [0.6,0.6,0.6], stem_args{:});
-
-set(gca, 'ycolor', [0.6,0.6,0.6]);
-ylabel(sprintf('%s \\%%', latex_pooled_struct.num_spikes_percentchange));
-ylim([-100, 200]);
-
-xlim([0,select_num_cells+1]);
-hide_only_axis('x');
-
-linkaxes(findall(gcf, 'type', 'axes'), 'x');
-exportgraphics(gcf, fullfile(fig_path, 's1-sortedVTchange.pdf'));
-close;
-
-%% Chi2 test of independence of dV_TR
-
-cutoff_cmap = return_colorbrewer('Dark2', 3);
-conf_levels = [0.1,0.01,0.05]; 
-
-chi2plt_opts = {...
-    struct(...
-        'var_name', 'dVthres_rest_change', ...
-        'var_cutoff_vec', linspace(0.01,2,200), ...
-        'var_unit', 'mV'), ...
-    struct(...
-        'var_name', 'Vthres_first_change', ...
-        'var_cutoff_vec', linspace(0.01,3,200), ...
-        'var_unit', 'mV'), ...
-    struct(...
-        'var_name', 'dVthres_rest_percentchange', ...
-        'var_cutoff_vec', linspace(0.05,6,200), ...
-        'var_unit', '\%'), ...
-    struct(...
-        'var_name', 'Vrest_1_change', ...
-        'var_cutoff_vec', linspace(0.01,2,200), ...
-        'var_unit', 'mV')
-};
-
-cutoff_types = [-1,0,1];
-
-nrow = 2;
-ncol = 2;
-
-graphic_setdefault(18, ...
-    'DefaultAxesMinorGridAlpha', 0.05, ...
-    'DefaultAxesMinorGridLineStyle', '-', ...
-    'DefaultTextInterpreter', 'latex', ...
-    'DefaultLegendInterpreter', 'latex', ...
-    'DefaultAxesTitleFontSize', 1.4, ...
-    'DefaultAxesLabelFontSize', 1.1, ...
-    'DefaultAxesLineWidth', 2, ...
-    'DefaultLineLineWidth', 3);
-
-figure; 
-for i = 1:length(chi2plt_opts)
-    subplot(nrow,ncol,i); hold on;
-    chi2_opt = chi2plt_opts{i};
-    var_name = chi2_opt.var_name;
-    latex_name = latex_pooled_struct.(var_name);
-    var_cutoffs = chi2_opt.var_cutoff_vec; 
-    var_unit = chi2_opt.var_unit;
-    
-    for j = 1:length(cutoff_types)
-        cutoff_type = cutoff_types(j);
-        
-        p_vals = arrayfun(@(var_cutoff) chi2test_groupeffect(pooled_table,var_name, var_cutoff, cutoff_type), var_cutoffs);
-        plot(var_cutoffs, p_vals,'color', cutoff_cmap(j,:), ...
-            'displayname', cutofftype2signgroup(cutoff_type, true), ...
-            'tag', 'showlegend');
-    end
-    
-    arrayfun(@(y) yline(y, ':k', 'linewidth', 2), conf_levels);
-    xlabel(sprintf('cutoff value (%s)', var_unit));
-    ylabel('$p$ value');
-    
-    if i == 1
-        arrayfun(@(y) text(max(var_cutoffs)*0.9, y, sprintf('\\textit{%.2f}', y), ...
-            'FontSize', 20, 'VerticalAlignment', 'top'), conf_levels);
-    end
-    
-    if i == 2
-        lgnd = legend(findobj(gca, 'tag', 'showlegend'), 'fontsize', 12);
-        title(lgnd, 'Sign groups');
-        set(lgnd, 'Box', 'on');
-    end
-    
-    title(sprintf('split by %s', latex_name));
-    ylim([2e-3,1]);
-    ax_pos = get(gca, 'position');
-    ax_pos = ax_pos.*[1,1,1,0.9] + [0,-0.02,0,0];
-    set(gca, 'yscale', 'log', 'position', ax_pos);
-
-end
-
-annotation('textbox', 'units', 'normalized', 'position', [0,0.95,1.0,0.05], ...
-    'string', '$\chi^2$ test of independence for [\textit{sign-group} $\times$ \textit{exp-group}]', ...
-    'Interpreter', 'latex', 'fontsize', 30, 'Linestyle', 'none', ...
-    'VerticalAlignment', 'top', 'HorizontalAlignment', 'center')
-
-pause(2);
-savefig(gcf, fullfile(fig_path, 's1-chi2-Vm'));
-exportgraphics(gcf, fullfile(fig_path, 's1-chi2-Vm.pdf'));
-close;
-
-
-%% Demo for split group 
+%% Split group and Chi2 test
 signgroup_cmap = [0.05,0.05,0.05;0.4,0.4,0.4;0.8,0.8,0.8];
 txtgroup_cmap  = [0.0,0.0,0.0;0.98,0.98,0.98;0.95,0.95,0.95];
 
-% demo_chi2_opts = {...
-%     struct(...
-%         'var_name', 'dVthres_rest_change', ...
-%         'var_cutoff', dVTR_change_cutoff, ...
-%         'var_additional_null', @(T) T.num_spikes_change < 0 & T.dVthres_rest_change < 0, ...
-%         'cutoff_types', -1, ...
-%         'var_unit', 'mV');
-% };
-
-demo_chi2_opts = {...
-    struct(...
+demo_chi2_opt = struct(...
         'var_name', 'dVthres_rest_percentchange', ...
         'var_cutoff', 1, ...               
         'var_additional_null', @(T) T.num_spikes_change < 0 & T.dVthres_rest_change < 0, ...
         'cutoff_types', -1, ...
         'var_unit', '%');
-};
 
-fig_file_name = 's1-chi2-pie.pdf'; 
+fig_name = 's1-chi2-pie.pdf'; 
 
 graphic_setdefault(20, ...
     'DefaultAxesMinorGridAlpha', 0.05, ...
@@ -629,66 +433,61 @@ graphic_setdefault(20, ...
     'DefaultAxesLineWidth', 2, ...
     'DefaultLineLineWidth', 3);
 
-for demo_chi2_opt = demo_chi2_opts
-    demo_chi2_opt = demo_chi2_opt{:}; %#ok<FXSET>
-    var_name = demo_chi2_opt.var_name;
-    var_cutoff = demo_chi2_opt.var_cutoff;
-    var_unit = demo_chi2_opt.var_unit; 
-    var_latex = latex_pooled_struct.(var_name);
-    
-    if isfield(demo_chi2_opt, 'var_additional_null')
-        additional_args = {demo_chi2_opt.var_additional_null}; 
-    end 
-    
-    for cutoff_type = demo_chi2_opt.cutoff_types
-        
-        fig_name = sprintf('%s-[var=%s]-[cutoff=%.2f]-[type=%d].pdf', fig_file_name, var_name, var_cutoff, cutoff_type);
-        
-        [pval, chi2aux] = chi2test_groupeffect(pooled_table, var_name, var_cutoff, cutoff_type, additional_args{:});
-        
-        sign_group_data = chi2aux.data;
-        pie_data = sign_group_data.Variables;
-        pie_titles = sign_group_data.Properties.RowNames;
-        pie_groups = sign_group_data.Properties.VariableNames;      
-        
-        pie_group_lbls = cellfun(@(x) sprintf('%s threshold shift', x) , pie_groups, 'uni', 0);
-        figure('units', 'normalized', 'position', [0,0,0.95,0.4]);
-        
-        tiledlayout(1,length(pie_titles), 'TileSpacing','none');
-        
-        for i = 1:length(pie_titles)
-            ax = nexttile;
-            data_ith = pie_data(i,:);
-            n_sample_ith = sum(pie_data(i,:));
-            pie(ax, data_ith, '$\\mathbf{%.0f\\%%}$');
-            
-            txt_objs = findobj(ax,'type','text');
-            for j = 1:length(txt_objs)
-                ptxt = txt_objs(j); 
-                txt_color = txtgroup_cmap(j,:);   
-                set(ptxt, 'FontSize', 22, 'Color', txt_color, ...
-                    'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle');
-                ptxt.Position = 0.65 * ptxt.Position;
-            end
-            
-            set(findobj(ax,'type','patch'), 'LineWidth', 4, 'EdgeColor', 'w');
-            ax.Colormap = signgroup_cmap;
-            ttl = title(ax,sprintf('%s (n=%d)', pie_titles{i}, n_sample_ith));
-            set(ttl,'unit', 'normalized');
-            ttl.Position(2) = ttl.Position(2) - 1.1;
+var_name = demo_chi2_opt.var_name;
+var_cutoff = demo_chi2_opt.var_cutoff;
+var_unit = demo_chi2_opt.var_unit; 
+var_latex = latex_pooled_struct.(var_name);
+
+if isfield(demo_chi2_opt, 'var_additional_null')
+    additional_args = {demo_chi2_opt.var_additional_null}; 
+end 
+
+for cutoff_type = demo_chi2_opt.cutoff_types
+
+    [pval, chi2aux] = chi2test_groupeffect(pooled_table, var_name, var_cutoff, cutoff_type, additional_args{:});
+
+    sign_group_data = chi2aux.data;
+    pie_data = sign_group_data.Variables;
+    pie_titles = sign_group_data.Properties.RowNames;
+    pie_groups = sign_group_data.Properties.VariableNames;      
+
+    pie_group_lbls = cellfun(@(x) sprintf('%s threshold shift', x) , pie_groups, 'uni', 0);
+    figure('units', 'normalized', 'position', [0,0,0.95,0.4]);
+
+    tiledlayout(1,length(pie_titles), 'TileSpacing','none');
+
+    for i = 1:length(pie_titles)
+        ax = nexttile;
+        data_ith = pie_data(i,:);
+        n_sample_ith = sum(pie_data(i,:));
+        pie(ax, data_ith, '$\\mathbf{%.0f\\%%}$');
+
+        txt_objs = findobj(ax,'type','text');
+        for j = 1:length(txt_objs)
+            ptxt = txt_objs(j); 
+            txt_color = txtgroup_cmap(j,:);   
+            set(ptxt, 'FontSize', 22, 'Color', txt_color, ...
+                'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle');
+            ptxt.Position = 0.65 * ptxt.Position;
         end
-        
-        lgnd = legend(pie_group_lbls, 'Fontsize', 24);
-        lgnd.Layout.Tile = 'east';
-        
-        lgnd_ttl = sprintf('$\\chi^2$ test $p$-value = %.3g', pval);
-        % lgnd_ttl = {lgnd_ttl, sprintf('split by %s $\\sim %.2f$', var_latex, var_cutoff)};
-        title(lgnd, lgnd_ttl, 'Interpreter', 'latex');
-        
-%         exportgraphics(gcf, fullfile(fig_path, fig_name));
-%         close;
+
+        set(findobj(ax,'type','patch'), 'LineWidth', 4, 'EdgeColor', 'w');
+        ax.Colormap = signgroup_cmap;
+        ttl = title(ax,sprintf('%s (n=%d)', pie_titles{i}, n_sample_ith));
+        set(ttl,'unit', 'normalized');
+        ttl.Position(2) = ttl.Position(2) - 1.1;
     end
+
+    lgnd = legend(pie_group_lbls, 'Fontsize', 24);
+    lgnd.Layout.Tile = 'east';
+
+    lgnd_ttl = sprintf('$\\chi^2$ test $p$-value = %.3g', pval);
+    title(lgnd, lgnd_ttl, 'Interpreter', 'latex');
+
+    exportgraphics(gcf, fullfile(fig_path, fig_name));
+    close;
 end
+
 
 %% Helper functions 
 function [pval,aux] = chi2test_groupeffect(tbl, var_name, var_cutoff, cutoff_type, var_additional_null)
@@ -749,31 +548,4 @@ function res = cutofftype2signgroup(cutoff_type, is_legend)
     if ~is_legend, return; end
     res = sprintf('(%s)', strjoin(res, ', '));
     
-end
-
-function res = append_varname_signgroup(sign_group, var_name, var_cutoff, var_unit, val_fmt)
-    if ~exist('var_unit', 'var')
-        var_unit = ''; 
-    else 
-        var_unit = sprintf(' %s', var_unit);
-    end
-    
-    if ~exist('val_fmt', 'var'), val_fmt = '%.1f'; end
-    var_name = regexprep(var_name, '\$', ''); 
-    
-    switch sign_group
-        case '0'
-            var_fmt = '\\left| %s \\right| \\leq';
-        case 'negative'
-            var_fmt = '%s < -';
-        case 'positive'
-            var_fmt = '%s >';
-        case 'non-positive'
-            var_fmt = '%s \\leq';
-        case 'non-negative'
-            var_fmt = '%s \\geq -';
-    end
-    fmt = ['$', var_fmt, val_fmt, '%s$'];
-    res = sprintf(fmt, var_name, var_cutoff, var_unit);
-
 end

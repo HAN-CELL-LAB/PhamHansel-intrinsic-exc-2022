@@ -1,3 +1,6 @@
+% THIS FILE WILL NOT RUN WITHOUT V1 DATA 
+% SEE README FILE 
+
 clc; clear; close all;
 run start_up;
 
