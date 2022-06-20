@@ -1,0 +1,16 @@
+PhamHansel-intrinsic-exc-2022/03-bioldata-anly/data/v1-data/*.csv
+PhamHansel-intrinsic-exc-2022/03-bioldata-anly/data/v1-data/*.mat
+PhamHansel-intrinsic-exc-2022/03-bioldata-anly/data/v1-data/*.pdf
+PhamHansel-intrinsic-exc-2022/03-bioldata-anly/data/ip-data/stats/v1*
+PhamHansel-intrinsic-exc-2022/03-bioldata-anly/data/supp-data/dat
+PhamHansel-intrinsic-exc-2022/03-bioldata-anly/data/supp-data/itx
+PhamHansel-intrinsic-exc-2022/03-bioldata-anly/data/pham-data/dat
+PhamHansel-intrinsic-exc-2022/03-bioldata-anly/data/pham-data/itx
+PhamHansel-intrinsic-exc-2022/03-bioldata-anly/data/hansel-data/dat
+PhamHansel-intrinsic-exc-2022/03-bioldata-anly/data/hansel-data/itx
+PhamHansel-intrinsic-exc-2022/03-bioldata-anly/data/gill-data/Layer\ II.III\ S1\ BC\ IP/dat
+PhamHansel-intrinsic-exc-2022/03-bioldata-anly/data/gill-data/Layer\ II.III\ S1\ BC\ IP/itx
+PhamHansel-intrinsic-exc-2022/manuscript/versions
+PhamHansel-intrinsic-exc-2022/manuscript/submission
+PhamHansel-intrinsic-exc-2022/.git
+PhamHansel-intrinsic-exc-2022/tar_exclude.txt
