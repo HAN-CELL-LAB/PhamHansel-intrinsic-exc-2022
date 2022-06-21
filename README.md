@@ -12,6 +12,8 @@
 
 - The complete data, figures and dependencies (`matlab-ext`) are archived at `figshare`. 
 
+  > Hansel, Christian; Pham, Tuan (2022): Intrinsic threshold plasticity: cholinergic activation and role in the neuronal recognition of incomplete input patterns - Data, figures and codes. figshare. Dataset. https://doi.org/10.6084/m9.figshare.20103518 
+
 ## Repository organization
 
 - `manuscript`: contains `Latex` project to generate manuscript
