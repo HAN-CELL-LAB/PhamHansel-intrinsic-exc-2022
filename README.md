@@ -16,18 +16,21 @@
 
 ## Citation
 
-This is now published in Journal of Physiology (2022). This article is open access and you can view the peer review on the website.
+This is now published in Journal of Physiology (2022). 
+
+This article is open access and you can download the [peer review](https://physoc.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1113%2FJP283473&file=tjp15204-sup-0002-PeerReview.pdf) on the website.
 
 > Pham, T. and Hansel, C. (2022), Intrinsic threshold plasticity: cholinergic activation and role in the neuronal recognition of incomplete input patterns. J Physiol. https://doi.org/10.1113/JP283473
 
 ``` bib
-@article{https://doi.org/10.1113/JP283473,
-author = {Pham, Tuan and Hansel, Christian},
-title = {Intrinsic threshold plasticity: cholinergic activation and role in the neuronal recognition of incomplete input patterns},
-journal = {The Journal of Physiology},
-doi = {https://doi.org/10.1113/JP283473},
-url = {https://physoc.onlinelibrary.wiley.com/doi/abs/10.1113/JP283473},
-eprint = {https://physoc.onlinelibrary.wiley.com/doi/pdf/10.1113/JP283473},
+@article{phamhanseljp2022,
+  author = {Pham, Tuan and Hansel, Christian},
+  title = {Intrinsic threshold plasticity: cholinergic activation and role in the neuronal recognition of incomplete input patterns},
+  journal = {The Journal of Physiology},
+  doi = {https://doi.org/10.1113/JP283473},
+  url = {https://physoc.onlinelibrary.wiley.com/doi/abs/10.1113/JP283473},
+  eprint = {https://physoc.onlinelibrary.wiley.com/doi/pdf/10.1113/JP283473},
+}
 ```
 
 ## Repository organization
